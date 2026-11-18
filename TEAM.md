@@ -28,15 +28,15 @@ Mỗi thành viên tự viết một mục bên dưới (chép mẫu, đổi ti�
 
 ### Phần việc phụ trách
 
-Kỹ sư cổng; trưởng nhóm.
+Kỹ sư cổng; trưởng nhóm. Phụ trách cấu hình repo, test công khai, câu 1.3 (Phiếu A/A2); tiếp theo là lệnh đánh giá, trace, cổng và chỉ số theo dõi khi đủ điều kiện của từng mốc.
 
 ### Đóng góp cụ thể
 
-_Chính thành viên bổ sung sau khi thực hiện; ghi rõ phần việc có dùng AI._
+Đã dùng Codex hỗ trợ điền bảng thành viên và phân vai, gắn remote upstream, cấu hình danh tính Git theo MSSV, chạy 13 test công khai (OK), và soạn thước đo offline cho bước chọn chính sách ở Phiếu A/A2. Chưa chạy eval/grade, chưa ký tiêu chí hoặc chốt cổng vòng 1.
 
 ### Bằng chứng
 
-_Chính thành viên bổ sung mã commit, mã lần chạy hoặc dòng trong phiếu._
+Commit `05587ec`: bảng thành viên và phân vai. Phiếu A/A2, câu 1.3: thước đo chọn phiên bản chính sách. Lệnh `python3 -m unittest discover -s tests`: 13 tests, OK. Chưa có mã lần chạy đánh giá.
 
 ### Exit ticket
 
