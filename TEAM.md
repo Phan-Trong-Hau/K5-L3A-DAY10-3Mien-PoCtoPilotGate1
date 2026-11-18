@@ -32,7 +32,7 @@ Kỹ sư cổng; trưởng nhóm. Phụ trách cấu hình repo, test công khai
 
 ### Đóng góp cụ thể
 
-Đã dùng Codex hỗ trợ điền bảng thành viên và phân vai, gắn remote upstream, cấu hình danh tính Git theo MSSV, chạy 13 test công khai (OK), và soạn thước đo offline cho bước chọn chính sách ở Phiếu A/A2. Sau khi cả nhóm xác nhận ngưỡng, đã ký tiêu chí ở commit 38883f6 và push trước baseline; chạy baseline, phân tích T-002@55, triển khai ba cổng ở guards.py, đo lại và chạy hai adhoc. Đã áp dụng cấu hình vận hành nhóm duyệt, chốt snapshot vòng 1 1c93c400, đo prepared 110/110 đúng. Đề xuất v1 đang chờ nhóm duyệt; chưa nhận thẻ hay chạy grade.
+Đã dùng Codex hỗ trợ điền bảng thành viên và phân vai, gắn remote upstream, cấu hình danh tính Git theo MSSV, chạy 13 test công khai (OK), và soạn thước đo offline cho bước chọn chính sách ở Phiếu A/A2. Sau khi cả nhóm xác nhận ngưỡng, đã ký tiêu chí ở commit 38883f6 và push trước baseline; chạy baseline, phân tích T-002@55, triển khai ba cổng ở guards.py, đo lại và chạy hai adhoc. Đã áp dụng cấu hình vận hành nhóm duyệt, chốt snapshot vòng 1 1c93c400, đo prepared 110/110 đúng. Nhóm đã chốt v1 Cải tiến thêm, hẹn quyết định lại 2026-11-20 (GMT+7); chưa nhận thẻ hay chạy grade.
 
 ### Bằng chứng
 

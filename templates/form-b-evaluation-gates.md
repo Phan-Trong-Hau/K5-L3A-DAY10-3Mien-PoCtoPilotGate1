@@ -198,7 +198,7 @@ Trạng thái: **Xong** (có bằng chứng) · **Chưa** · **Không áp dụng
 | 6 | Chi phí | ≤8000đ/ticket, ROI≥0.25, giới hạn Finance | Đạt tổng thể mock; còn phân khúc ? đắt | B0, B7.4; report kho ?=10359đ | Bùi Gia Huy |
 | 7 | Vận hành | PIC, ca trực, cảnh báo và dừng | Có cấu hình/runbook; chưa diễn tập thực tế | B7.5–B7.6, operating_gates.json | Ngô Đức Thịnh |
 | 8 | Con người, pháp lý | PII, căn cứ lỗi hãng và đối soát | Có hai cổng; chưa chứng minh mọi payload | legal config, B4 và B7.5 | Đỗ Duy Bộ |
-| 9 | Quyết định | Khớp tiêu chí đã ký | Chờ nhóm chốt v1 | A5, B8 | Phan Trọng Hậu |
+| 9 | Quyết định | Khớp tiêu chí đã ký | Xong v1: nhóm chọn Cải tiến thêm | A5, B8 | Phan Trọng Hậu |
 
 Ô "Chưa" có rủi ro cao → chuyển thành một dòng Risk register (Phiếu C mục C10).
 
@@ -363,26 +363,26 @@ Chỉ chọn Tiếp tục khi mọi chỉ số bắt buộc đều đạt.
 Ba câu tự vấn trước khi viết: (1) Rủi ro còn lại có chấp nhận được như hiện trạng không? (2) Cần thêm biện pháp nào, tốn
 bao nhiêu thời gian? (3) Có phần nào của dự án không nên làm tiếp?
 
-**Trạng thái quyết định:** BẢN ĐỀ XUẤT để nhóm duyệt; chưa coi là quyết định v1 đã chốt. Bản chụp kỹ thuật prepared đã khóa và giữ nguyên.
+**Trạng thái quyết định:** Nhóm đã xác nhận **Cải tiến thêm** qua trưởng nhóm trong phiên làm việc; ghi nhận lúc 2026-11-18T15:28:00+07:00. Đây là bản v1 đã chốt trước khi nhận thẻ sự cố. Giữ nguyên Phiếu B và bản chụp prepared từ mốc này; cập nhật vòng 2 ở Phiếu C.
 
-| Mục | v1 — đề xuất Cải tiến thêm |
+| Mục | v1 — Cải tiến thêm (đã chốt) |
 |---|---|
 | Commit ký tiêu chí | 38883f6, đã push qua 6908bae trước baseline |
 | Hash chốt vòng 1 | 1c93c400 |
 | Mã lần chạy | base: R-base-before-20261118-150607-b45eeb; prepared: R-base-prepared-20261118-151443-f76021 |
 | Còn vượt trần? | ops.violations rỗng; mọi tiêu chí đã ký đạt tổng thể. Tuy nhiên phân khúc kho ? tốn 10359đ/ticket > làm tay 10000đ và chưa có bằng chứng đầy đủ về phê duyệt/tải đỉnh. |
 | Kho hoặc hãng xấu nhất | Kho ? chi phí 10359đ/ticket, review_rate=1.0; nếu chỉ xét nhóm này thì chưa có lợi ích tự động hóa. Baseline HCM/VNX chịu tiền sai; prepared đã hết lỗi quan sát được. |
-| Quyết định | Đề xuất **Cải tiến thêm**, chờ nhóm chốt. Chưa cấp phép pilot khách thật. |
+| Quyết định | **Cải tiến thêm**. Chưa cho pilot khách thật; bộ nền đạt nhưng cần kiểm chứng thêm quyền hạn, tải đỉnh và phân khúc chi phí cao. |
 | Bằng chứng 1 | prepared: pass_rate=1.0, CI95% [1.0;1.0], pass^5=1.0, 110/110 đúng; CI trên mock không phải bảo đảm production. |
 | Bằng chứng 2 | prepared: hoàn thừa=0, hoàn thiếu=0, lỗi hãng oan=0, PII=0; trước sửa là 20000đ hoàn thừa và 1 lỗi oan. |
 | Bằng chứng 3 | prepared: tổng chi phí=4456đ/ticket, ROI=1.24, queue_stuck=0, 1 người ×6 ca/giờ, SLA60; phân khúc ? vẫn đắt và tải hiện phân bố đều. |
 | Khớp decision_rule | Chưa chọn Tiếp tục vì còn rủi ro quyền hạn và bằng chứng phạm vi/tải; áp dụng tinh thần Cải tiến thêm với giả thuyết, hạn 2 ngày làm việc. Không nói tiêu chí số đã trượt khi chúng thực tế đạt. |
 | Nếu Thu hẹp | Chưa chọn; cần xác định cách nhận diện ca không tìm thấy đơn trước gọi LLM và đường chuyển người, đo lại phạm vi >0 trước khi chốt. |
-| Nếu Cải tiến thêm | Kiểm phê duyệt đúng đối tượng/hạn mức/hiệu lực, kiểm tải dồn so SLA, xác định luồng đơn không tìm thấy để giảm chi phí nhóm ?. Tái đo, không sửa tiêu chí đã ký hoặc bản chụp prepared; hạn 2 ngày làm việc sau khi nhóm chốt v1. |
+| Nếu Cải tiến thêm | Kiểm phê duyệt đúng đối tượng/hạn mức/hiệu lực, kiểm tải dồn so SLA, xác định luồng đơn không tìm thấy để giảm chi phí nhóm ?. Tái đo, không sửa tiêu chí đã ký hoặc bản chụp prepared; hạn **2026-11-20 (GMT+7)**, trong 2 ngày làm việc từ ngày chốt 2026-11-18. |
 | Nếu Dừng | Chưa chọn; nếu hết hạn cải tiến mà không kiểm soát được tác hại/chi phí thì áp dụng dòng Dừng đã ký. |
 | Bằng chứng còn thiếu | Adversarial/test ẩn, sự cố đã bốc, tải đỉnh, dữ liệu tracking thật và giao dịch nguyên tử khi nhiều worker. Không mở thẻ trước khi biết số được giao. |
-| Ngày quyết định lại | Trong 2 ngày làm việc từ ngày chốt v1; chốt ngày lịch cùng nhóm khi duyệt. |
-| PIC ký | Phan Trọng Hậu - 2A202603547: đang chờ xác nhận quyết định, không ghi giả đã ký. |
+| Ngày quyết định lại | **2026-11-20 (GMT+7)**; Hậu, Huy, Thịnh, Bộ cùng rà soát. |
+| PIC ký | Phan Trọng Hậu - 2A202603547, thay mặt nhóm đã xác nhận quyết định v1 trong phiên làm việc. Đây là xác nhận của nhóm, không phải phê duyệt release của giảng viên. |
 
 Xong v1 thì lưu và đẩy một bản (sau mốc này không sửa cột v1):
 
