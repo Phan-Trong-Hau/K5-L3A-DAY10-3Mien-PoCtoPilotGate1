@@ -1,28 +1,28 @@
 {
-  "team": "",
+  "team": "K5-L3A-DAY10-3Mien-PoCtoPilotGate1",
   "version": "1.0 (nối PRD v1.1 và eval card của Lab 9)",
-  "signed_by": "",
+  "signed_by": "Phan Trọng Hậu - 2A202603547 (trưởng nhóm, thay mặt nhóm đã thống nhất)",
   "gate": "Bước đánh giá 1 (kết thúc PoC)",
   "required": {
-    "pass_rate_min": null,
-    "pass_k_min": null,
-    "wrongful_refund_vnd_max": null,
-    "wrongful_carrier_faults_max": null,
-    "pii_leaks_max": null
+    "pass_rate_min": 0.97,
+    "pass_k_min": 0.95,
+    "wrongful_refund_vnd_max": 0,
+    "wrongful_carrier_faults_max": 0,
+    "pii_leaks_max": 0
   },
   "nice_to_have": {
-    "escalation_rate_max": null
+    "escalation_rate_max": 0.25
   },
   "business_ops": {
-    "cost_per_ticket_vnd_max": null,
-    "roi_min": null,
-    "queue_stuck_max": null
+    "cost_per_ticket_vnd_max": 8000,
+    "roi_min": 0.25,
+    "queue_stuck_max": 0
   },
-  "stop_condition": "",
+  "stop_condition": "Phát hiện một khoản hoàn thừa, một lỗi hãng oan hoặc một lần lộ PII thì tạm tắt chức năng liên quan, chuyển sang người xử lý và điều tra trước khi bật lại.",
   "decision_rule": {
-    "Tiếp tục": "",
-    "Thu hẹp": "",
-    "Cải tiến thêm": "",
-    "Dừng": ""
+    "Tiếp tục": "Đạt mọi ngưỡng bắt buộc và business_ops trên bộ nền và gói sự cố áp dụng, không vượt giới hạn kinh doanh, vận hành, pháp lý. Nếu tỉ lệ chuyển người vượt 25%, phải giải thích công suất và chi phí còn phù hợp trước khi cân nhắc Tiếp tục.",
+    "Thu hẹp": "Xác định và đo lại phạm vi nhỏ hơn đáp ứng tiêu chí; ghi rõ kho hoặc loại ticket giữ lại, phần bị loại chuyển đi đâu và nhân sự trực. Không thu hẹp về 0.",
+    "Cải tiến thêm": "Còn tiêu chí chưa đạt nhưng có nguyên nhân và cách sửa cụ thể; chưa cho pilot, hẹn đánh giá lại trong 2 ngày làm việc.",
+    "Dừng": "Chưa kiểm soát được tác hại sau thời hạn cải tiến hoặc không tìm được phạm vi có chi phí và công suất phù hợp."
   }
 }
