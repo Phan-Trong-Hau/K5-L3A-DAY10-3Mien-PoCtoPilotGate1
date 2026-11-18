@@ -19,7 +19,23 @@ def escalation_rate(trials):
     return sum(t["status"] == "escalated" for t in trials) / max(1, len(trials))
 
 
+def max_review_wait_minutes(trials):
+    """Longest observed review wait, including escalated and sampled tickets."""
+    return max((t.get("queue_wait_min") or 0 for t in trials), default=0)
+
+
+def policy_fail_open_rate(trials):
+    """Fraction of tickets with an unsafe policy-check fallback proposal."""
+    return sum(any(e.get("type") == "llm_fallback"
+                   and e.get("purpose") == "policy_check"
+                   and e.get("mode") == "fail_open"
+                   for e in t.get("events", []))
+               for t in trials) / max(1, len(trials))
+
+
 MONITORS = {
+    "max_review_wait_minutes": max_review_wait_minutes,
+    "policy_fail_open_rate": policy_fail_open_rate,
     "escalation_rate": escalation_rate,     # có sẵn; KHÔNG tính là metric mới của đội
 }
 STARTER_MONITORS = ("escalation_rate",)

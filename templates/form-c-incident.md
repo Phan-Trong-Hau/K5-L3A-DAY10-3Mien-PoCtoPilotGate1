@@ -1,6 +1,6 @@
 # Phiếu C · Sự cố và quyết định v2 · Khối 3 (phút 125–200)
 
-**Bàn:** ______ · **Thẻ đã bốc:** ___ *(để trống tới phút 125; bốc số xong thì ghi đúng số đó, ví dụ `S3`. Lab Coach đối chiếu với sổ; lệnh tự kiểm tra in dòng này trong report.)*
+**Bàn:** 3Mien · **Thẻ đã bốc:** S4 *(để trống tới phút 125; bốc số xong thì ghi đúng số đó, ví dụ `S3`. Lab Coach đối chiếu với sổ; lệnh tự kiểm tra in dòng này trong report.)*
 
 Mở `incidents/Sx/card.md` của đúng số đã bốc. Các bước trên thẻ trỏ về đúng mục trong phiếu này. Mục C3 chỉ điền phần ứng với
 số thẻ của bàn; các phần khác để trống.
@@ -30,10 +30,10 @@ Mỗi lệnh `lab10.eval` và `lab10.grade` tự ghi một dòng vào `runs/jour
 
 | # | Mã lần chạy | Bộ ticket · mốc | Đổi MỘT thứ gì so với lần trước | pass_rate (khoảng tin cậy 95%) | pass_k | Hoàn sai (đ) · lỗi hãng oan · lộ dữ liệu | Tỉ lệ chuyển người | Kết luận (một câu) |
 |---|---|---|---|---|---|---|---|---|
-| 1 | | Sx · prepared | nhận thẻ đã bốc, chưa sửa thêm (đúng cổng vòng 1 đã chốt) | | | | | |
-| 2 | | Sx · after | | | | | | |
-| 3 | | Sx · after | | | | | | |
-| 4 | | base · after | (kiểm không regression) | | | | | |
+| 1 | R-S4-prepared-20261118-163800-f76021 | S4 · prepared | Nhận thẻ, chưa sửa code/config | 1.0 [1.0;1.0] | 1.0 | 0 · 0 · 0 | 0.5122 | Cổng ngăn sai tiền/lỗi hãng, còn 10 ca ùn và vượt ngân sách ngày. |
+| 2 | R-S4-after-20261118-163825-906777 | S4 · after | Thêm cổng ngân sách hiệu lực trong guards.py và monitor; không đổi operating_gates | 1.0 [1.0;1.0] | 1.0 | 0 · 0 · 0 | 0.5317 | Hoàn tự động ≤294000đ; queue vẫn 10 ca ùn. |
+| 3 | R-S4-after-20261118-163826-906777 | S4 · after (grade) | Không đổi gì, tự kiểm lại ba mốc | 1.0 [1.0;1.0] | 1.0 | 0 · 0 · 0 | 0.5317 | integrity/criteria/regression/monitor đạt; visible chưa đạt vì queue. |
+| 4 | R-base-after-20261118-163825-906777 | base · after | Kiểm bộ nền sau sửa | 1.0 [1.0;1.0] | 1.0 | 0 · 0 · 0 | 0.2273 | 110/110 đúng; không regression; 13 tests OK. |
 
 ---
 
@@ -47,14 +47,14 @@ Chạy **trước khi sửa bất cứ thứ gì**:
 python3 -m lab10.grade --incident Sx
 ```
 
-- Mã lần chạy grade: `__________` · base: `__________` · prepared: `__________`
-- Cổng vòng 1 đỡ được ô / con số nào (so cột base với cột prepared): …
-- Khối kinh doanh và vận hành còn dòng nào vượt trần: …
+- Mã grade trước sửa: `R-S4-grade-20261118-163800-f76021` · base: `R-S4-before-20261118-163800-f76021` · prepared: `R-S4-prepared-20261118-163800-f76021`.
+- Bằng chứng kỹ thuật: pass_rate 0.8683 →1.0; pass^5 0.6829 →1.0; tổng hoàn thừa 160000đ →0; lỗi hãng oan 27 →0. Cổng từ chối basis=fail_open, kiểm quyền lợi và tracking đã ngăn lỗi ghi quan sát được.
+- Còn vượt: prepared có 10 ca ùn, chờ lâu nhất 128 phút >60; hoàn tự động/ngày 378000đ > ngân sách sale 300000đ. Chi phí 6486đ/ticket, ROI0.54; chưa sửa nhân sự/phạm vi.
 
 **Mở lại pre-mortem (Phiếu B mục B6), viết bằng bút khác màu.** Với thẻ S1, S3, S4, S5 đây là một phần của phần riêng theo thẻ.
 
-- Sự cố trên thẻ thuộc lăng kính nào (kỹ thuật, kinh doanh, con người và vận hành, pháp lý)? …
-- Có nằm trong các lý do bàn đã viết không? Nếu có: cổng vòng 1 đã đỡ được bao nhiêu (đọc cột prepared trong report)? Nếu không: vì sao cả bàn không nghĩ tới? …
+- Sự cố thuộc kỹ thuật (LLM fail_open), kinh doanh (ngân sách sale), con người/vận hành (hàng chờ); có tác hại pháp lý cho hãng bị ghi oan.
+- B6 đã có LLM lỗi, công suất 6 ca/giờ và vượt ngân sách; prepared đỡ lỗi ghi nhưng không xử lý tải dồn, không tự đọc trần sale thấp hơn config. Đây là khoảng hở của biện pháp, không phải chưa từng nêu rủi ro. Phần điều phối giờ cao điểm bàn giao Thịnh/Bộ; không sửa B7.6 thay người phụ trách.
 - Lý do còn thiếu, thêm bây giờ:
 
 | Lý do thất bại (viết ở thì quá khứ) | Lăng kính | Kiểm được bằng gì (trace / data / config nào) |
@@ -65,46 +65,37 @@ python3 -m lab10.grade --incident Sx
 
 <a id="c2"></a>
 
-## C2 · Câu 3.1 · Bảng soát lỗi của thẻ
+## C2 · Câu 3.1 · Bảng soát lỗi — phần trace kỹ thuật của Hậu
 
-Dò ít nhất 2 ticket hỏng theo kiểu KHÁC nhau:
+Tác hại: hãng bị ghi oan, LogiX hoàn thừa/vượt ngân sách, khách và người trực chịu trễ xử lý. Base có tổng hoàn thừa 160000đ/205 trial, 27 lỗi hãng oan; queue 4 ca ùn, tối đa78 phút; ngày hoàn tự động cao nhất466000đ >300000đ. Không nhầm tổng 5 seed với số tiền một ngày.
 
-```bash
-python3 -m lab10.trace --suite Sx --ticket <ID> --seed 11
-```
+### Phần 1 · Bằng chứng
 
-Ba loại lỗi: **giới hạn của hệ thống** · **lỗi ngữ cảnh** · **lỗi chìm** (cả người dùng lẫn hệ thống đều không nhận ra; nguy hiểm nhất,
-người chịu hại thường là bên thứ ba). Định nghĩa đầy đủ và ví dụ: Phiếu B mục B2.
-
-**Tác hại của thẻ:** cho ai `____` · đo bằng gì `____` · bao nhiêu ở mốc base `____`
-
-### Phần 1 · Ghi lỗi (bằng chứng là mã ticket@seed và dòng trace, không tả chung chung)
-
-| # | Lỗi: người ta thấy gì (dán dòng trace / sổ cái) | Ai gặp, ai chịu | Hệ trọng (thấp / cao) | Loại lỗi (giới hạn hệ thống / ngữ cảnh / chìm) |
+| # | Quan sát thật | Ai chịu | Hệ trọng | Loại |
 |---|---|---|---|---|
-| 1 | | | | |
-| 2 | | | | |
-| 3 | | | | |
+| 1 | S4-08@11 base: tracking MERCHANT_HANDOVER; hai lỗi429 ở trace04–05, fallback fail_open ở06, proposal do_fault=true ở07, ghi lỗi VNX ở09. Seed22 chỉ lỗi một lần rồi basis=policy, không ghi lỗi hãng: đạt. | VNX/tài xế và đối soát | Cao | Lỗi chìm: tool thành công nhưng căn cứ sai; hãng chịu hậu quả. |
+| 2 | S4-07@11 DAMAGED →escalated là đúng nhãn; trong luồng ngày, S4-33@11 prepared đến phút292, chờ128 phút và queue_stuck=true. Đây là lỗi cấp dịch vụ dù ticket-level có thể đạt. | Khách/Hạnh | Cao | Giới hạn hệ thống vận hành: 1 người ×6 ca/giờ không đáp ứng tải dồn. Không gọi S4-07 là ticket hỏng. |
+| 3 | Prepared hoàn tự động tối đa378000đ/ngày dù ops_limits sale=300000đ; config bàn giữ2000000đ. Sau sửa, S4-39@22 có gate escalate vì vượt trần hiệu lực; max ngày294000đ. | Finance và vận hành | Cao | Lỗi chìm giữa nguồn giới hạn và cấu hình; số tiền từng ticket đúng vẫn có thể vượt tổng ngày. |
 
-### Phần 2 · Tìm nguồn (đánh dấu câu nào đúng với từng lỗi)
+### Phần 2 · Nguồn
 
 | Câu hỏi | Lỗi 1 | Lỗi 2 | Lỗi 3 |
 |---|---|---|---|
-| **Đầu vào:** hệ thống có tự diễn giải / sửa đầu vào của người dùng theo cách họ không lường? Có đặt sai trọng số cho một lời nói hay tín hiệu của người dùng? | | | |
-| **Độ liên quan:** hệ thống có thiếu dữ liệu cần để quyết đúng? Dữ liệu vào có nhiễu, thiếu ổn định? | | | |
-| **Thứ bậc hệ thống:** có hai hệ thống cùng ghi / cùng theo dõi một thứ mà không rõ bên nào là chủ (ví dụ CSKH hoàn tay và trợ lý cùng ghi sổ)? | | | |
-| **Trạng thái hỏng:** nhiều lỗi cộng lại có làm tính năng không dùng được (ví dụ LLM lỗi liên tiếp)? | | | |
+| Đầu vào | Tracking có nguyên nhân đúng, không phải khách nói sai. | Ca vỡ/thất lạc thực sự cần người; không tự động hóa để làm đẹp queue. | Cấu hình tĩnh không đọc ngân sách ngày mới. |
+| Độ liên quan | Sau429, hệ thống không dùng nhánh an toàn. | Công suất và thời điểm tới cần được tính cùng nhau. | Có đủ ops_limits nhưng host chỉ dùng cap config. |
+| Thứ bậc | Model fail_open vượt quyết định kiểm căn cứ. | Máy quyết escalation, hàng người có công suất riêng. | Finance300000đ phải ưu tiên hơn config2000000đ. |
+| Trạng thái hỏng | Hai lỗi429 dẫn tới ghi lỗi oan. | Tích lũy backlog trong một giờ. | Nhiều khoản hợp lệ cộng lại vượt trần. |
 
-### Phần 3 · Hướng xử lý (mỗi lỗi một ô)
+### Phần 3 · Hướng xử lý
 
 | | Lỗi 1 | Lỗi 2 | Lỗi 3 |
 |---|---|---|---|
-| Vì sao người gặp coi đây là lỗi | | | |
-| Kiểu giải pháp: phản hồi cho người dùng / trao quyền kiểm soát cho người / khác | | | |
-| Đường đi của người sau khi có giải pháp (ví dụ: ticket chuyển sang người duyệt → duyệt → khách được trả lời) | | | |
-| Hệ thống học được gì (tín hiệu ghi lại để theo dõi: tên metric trong `monitors.py`) | | | |
+| Vì sao là lỗi | MERCHANT_HANDOVER không đủ căn cứ ghi lỗi hãng. | Khách chờ quá SLA60 phút. | Finance không cho tự động quá300000đ ngày sale. |
+| Biện pháp | Giữ guard vòng1: chuyển người nếu basis không phải policy, kiểm lại tracking. | Monitor hàng chờ; người phụ trách chọn nhân sự/phạm vi, không tự sửa ở scope kỹ thuật. | Guard lấy min(trần config,trần ops_limits), chuyển phần vượt sang người. |
+| Đường đi | Người duyệt tra chính sách, đối soát lỗi hãng đã ghi ở bản gốc. | Hạnh/Tùng nhận cảnh báo và điều phối theo quyền. | Chuyển người trước ghi, không khẳng định người sẽ duyệt ngay. |
+| Tín hiệu | policy_fail_open_rate | max_review_wait_minutes | gate reason và auto_refund_day_max_vnd trong report |
 
-Yêu cầu: ít nhất **hai lỗi có nguồn khác nhau** ở phần 2, và ít nhất một lỗi được xếp đúng là **lỗi chìm**.
+S4-08 và S4-02 đã trace lỗi ghi; cả hai có cùng cơ chế fail_open. Không dùng chúng để giả nhận hai nguyên nhân độc lập. Lỗi dịch vụ và giới hạn tổng ngày là hai nguồn bổ sung từ report/trace theo ngày.
 
 ---
 
@@ -265,6 +256,8 @@ Vì sao có thể sai: …
 
 ## C6 · Câu 3.4 · Fault tree TRƯỚC khi sửa (mã lần chạy: `__________`)
 
+**Đầu vào kỹ thuật Hậu bàn giao (không thay quyết định nhóm):** 429 → fail_open → đề xuất/ghi lỗi hãng oan (S4-08@11 base); trần config2000000đ không khớp Finance300000đ → vượt ngân sách ngày (prepared378000đ); escalation + arrivals dồn → backlog (S4-33@11 prepared128 phút). Nhóm dùng các lá bằng chứng này để hoàn thiện fault tree đa tầng.
+
 **Khung tư duy.** Đi từ **tác hại** ngược về nguyên nhân, không đi từ lỗi mình tình cờ thấy. Mỗi tầng hỏi "điều gì phải xảy
 ra thì điều trên mới xảy ra", nối bằng **HOẶC** (một trong các nhánh là đủ) hoặc **VÀ** (phải đồng thời). Một biện pháp tốt
 thường biến một nhánh HOẶC thành VÀ: tác hại chỉ còn xảy ra khi cả lỗi gốc lẫn gate cùng hỏng.
@@ -313,11 +306,11 @@ python3 -m lab10.eval --suite Sx --stage after --note "đổi MỘT thứ: ..."
 python3 -m lab10.grade --incident Sx
 ```
 
-| Nhánh fault tree | Nguyên nhân | Chỗ sửa (hàm + nhánh trong `guards.py`, hoặc khoá trong `operating_gates.json`) | Tầng (phát hiện / chặn / giới hạn thiệt hại / vận hành) | GIẢM khả năng hay NGĂN hẳn? Vì sao | Mã lần chạy sau khi sửa |
+| Nhánh | Nguyên nhân | Chỗ sửa | Tầng | Giảm hay ngăn | Bằng chứng |
 |---|---|---|---|---|---|
-| [1] | | | | | |
-| [2] | | | | | |
-| [3] | | | | | |
+| Ngân sách ngày | Trần config cao hơn trần sale | guards.write_gate/issue_refund: min ops_limits và business cap cho hoàn không có approval_id | Chặn/giới hạn | Ngăn vượt trần tự động trong mô phỏng tuần tự; production cần atomic check-and-write, phê duyệt phải được kiểm riêng | S4-after-20261118-163825-906777; max294000đ≤300000đ |
+| Fail-open | LLM429 rồi đề xuất ghi thiếu căn cứ | Không đổi: cổng vòng1 đã kiểm basis và tracking | Chặn | Ngăn nhánh ghi quan sát được; chuyển người làm tăng tải chứ không giải quyết queue | S4-08@11 prepared/after: không ledger, không lỗi hãng |
+| Queue | Tải dồn vượt công suất người | monitors.py phát hiện; không đổi operations/pilot_scope | Phát hiện | Không ngăn ùn. Bàn giao Thịnh/Bộ và Huy chọn cấu hình, giữ 10 ca ùn làm bằng chứng thật | Grade163826: chờ128 phút, visible chưa đạt |
 
 ---
 
@@ -330,20 +323,22 @@ Thẻ S5 dùng mục này cho một con số kinh doanh: chi phí mỗi ticket t
 
 | | Chỉ số theo dõi mới của bàn |
 |---|---|
-| **Tên trong `MONITORS`** | |
-| **Bước / hành vi được đo** | |
-| **Thước đo** (một câu, có đơn vị) | |
-| **Dữ liệu** (trường nào của trial, không có nhãn) | |
-| **Cách tính** (công thức, mẫu số, cách xử lý ca thiếu dữ liệu) | |
-| **Khung thời gian / ngưỡng báo động** | |
-| **Điểm mù** (chỉ số này KHÔNG thấy gì) | |
-| Giá trị trên bộ nền · trên thẻ (đọc mục `monitor` của report) | |
+| Tên MONITORS | max_review_wait_minutes; policy_fail_open_rate |
+| Hành vi | Chờ người duyệt và fallback không an toàn sau lỗi LLM. |
+| Thước đo | Chờ lâu nhất tính bằng phút; tỉ lệ ticket có policy_check fallback fail_open (0–1). |
+| Dữ liệu | queue_wait_min và events(type,purpose,mode) của trial; không đọc label/pass. |
+| Cách tính | max(queue_wait_min hợp lệ, mặc định0 nếu chưa có hàng chờ); số ticket có ≥1 fallback fail_open chia tổng ticket, mẫu rỗng trả0. Mỗi ticket chỉ đếm một lần. |
+| Khung thời gian/ngưỡng | Tổng hợp theo ngày/seed như suite; chờ>60 phút là vượt SLA đã có. Fail_open>0 cảnh báo kỹ thuật cần đối soát; không coi mọi fallback đã gây ghi sai. |
+| Điểm mù | max wait không cho biết percentile hay ca thiếu dữ liệu; trả0 khi không có queue không chứng minh telemetry đầy đủ. Fail_open đếm đề xuất kể cả guard đã chặn, không đo tác hại thực. |
+| Giá trị base · S4 after | Chờ0 ·128 phút; fail_open0 ·0.185366 (38/205 trial). Grade xác nhận monitor ✅, không lỗi. |
 
 ---
 
 <a id="c9"></a>
 
 ## C9 · Câu 3.7 · Fault tree SAU khi sửa (mã lần chạy: `__________`)
+
+**Đầu vào kỹ thuật sau sửa:** guard min(trần config,Finance) chặn nhánh vượt ngân sách tự động, max ngày294000đ; guard vòng1 giữ nhánh fail_open không ghi; nhánh công suất người vẫn hở (10 ca ùn,128 phút), monitor chỉ phát hiện. Phần quyết định nhân sự/phạm vi do thành viên phụ trách cập nhật.
 
 Vẽ lại cây ở C6. Ở mỗi nhánh đã xử lý, thêm một nút `VÀ [gate … hỏng]` và ghi:
 

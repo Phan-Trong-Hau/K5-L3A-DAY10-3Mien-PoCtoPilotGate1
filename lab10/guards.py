@@ -58,6 +58,16 @@ def write_gate(ctx, action):
     parcel = H.ticket_parcel(order, ctx.ticket, ctx.as_of)
     delay = H.db_delay_days(parcel, ctx.as_of)
     if tool == "issue_refund":
+        # S4: Finance may lower the daily ceiling; always enforce the tighter
+        # source-of-truth limit, without changing the team's operating config.
+        if not action.get("approval_id"):
+            limits = [cap for cap in (
+                ctx.tools.ops_limits().get("daily_auto_refund_budget_vnd"),
+                (ctx.gates or {}).get("business", {}).get("daily_refund_cap_vnd"),
+            ) if cap is not None]
+            if limits and (ctx.tools.auto_refund_today_vnd()
+                           + action.get("amount_vnd", 0) > min(limits)):
+                return Verdict.escalate("vượt trần hoàn tự động hiệu lực trong ngày, chuyển người duyệt")
         # B6 kỹ thuật: quyền lợi phải tính từ DB; không đọc nhãn hay seed.
         if parcel.get("delay_cause") is None and delay > 0:
             return Verdict.escalate("thiếu nguyên nhân trễ trong tracking")

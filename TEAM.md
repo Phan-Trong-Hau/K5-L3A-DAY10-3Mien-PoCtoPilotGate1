@@ -5,7 +5,7 @@
 - Tên nhóm (`TenNhom`, không dấu, không khoảng trắng): `3Mien`
 - Lớp: `L3A`
 - Repo của bàn: `K5-L3A-DAY10-3Mien-PoCtoPilotGate1`
-- Thẻ sự cố đã bốc (S1–S8):
+- Thẻ sự cố đã bốc (S1–S8): **S4**
 
 ## Thành viên
 
@@ -28,19 +28,43 @@ Mỗi thành viên tự viết một mục bên dưới (chép mẫu, đổi ti�
 
 ### Phần việc phụ trách
 
-Kỹ sư cổng; trưởng nhóm. Phụ trách cấu hình repo, test công khai, câu 1.3 (Phiếu A/A2); tiếp theo là lệnh đánh giá, trace, cổng và chỉ số theo dõi khi đủ điều kiện của từng mốc.
+**Vai:** Kỹ sư cổng; trưởng nhóm. Phụ trách cấu hình repo và Git, bảng thành viên; câu 1.3 (Phiếu A/A2); câu 2.1–2.2 (đánh giá, trace và soát lỗi); câu 2.6–2.8 (cổng, tránh rò rỉ dữ liệu đánh giá, behavioral test); chốt bản kỹ thuật vòng 1 và cung cấp bằng chứng cho quyết định chung. Ở vòng 2 phụ trách trace, sửa cổng, thêm monitor và kiểm regression khi có thẻ được giao.
+
+Ngưỡng chấp nhận, cấu hình ngân sách/nhân sự/pháp lý và quyết định v1/v2 là nội dung nhóm thống nhất hoặc thành viên phụ trách chốt; không coi đó là quyết định cá nhân của kỹ sư cổng.
 
 ### Đóng góp cụ thể
 
-Đã dùng Codex hỗ trợ điền bảng thành viên và phân vai, gắn remote upstream, cấu hình danh tính Git theo MSSV, chạy 13 test công khai (OK), và soạn thước đo offline cho bước chọn chính sách ở Phiếu A/A2. Sau khi cả nhóm xác nhận ngưỡng, đã ký tiêu chí ở commit 38883f6 và push trước baseline; chạy baseline, phân tích T-002@55, triển khai ba cổng ở guards.py, đo lại và chạy hai adhoc. Đã áp dụng cấu hình vận hành nhóm duyệt, chốt snapshot vòng 1 1c93c400, đo prepared 110/110 đúng. Nhóm đã chốt v1 Cải tiến thêm, hẹn quyết định lại 2026-11-20 (GMT+7); chưa nhận thẻ hay chạy grade.
+- Chuẩn bị repo: gắn upstream tới repo mẫu, cấu hình Git theo MSSV và email giả, điền bảng bốn thành viên/phân vai và push lên origin/main.
+- Đọc README, CHECKPOINTS, RUBRIC, RULES, SUBMISSION; đối chiếu PRD v1.1 và eval card Lab 9. Thiết kế thước đo offline về chọn đúng phiên bản chính sách theo ngày hiệu lực tại Phiếu A/A2.
+- Sau khi cả nhóm xác nhận tiêu chí, thực hiện ký và push tiêu chí trước baseline; giữ nguyên file tiêu chí và hash sau ký.
+- Đo baseline 22 ticket × 5 seed. Phân tích `T-002@55`: trace ghi đè độ trễ tracking từ 2 thành 5 ngày, dẫn tới hoàn thừa 20000đ và ghi một lỗi oan cho VNX. Phân biệt lỗi quan sát được với rủi ro chưa kiểm chứng.
+- Triển khai ba cổng chung trong `lab10/guards.py`: ghim chính sách hiệu lực; kiểm chủ đơn, quyền lợi còn lại từ tracking/chính sách/ledger trước hoàn; kiểm đúng kiện và căn cứ ghi lỗi hãng. Không phân nhánh theo mã ticket, seed hoặc nhãn kết quả.
+- Chạy lại bộ nền, 13 test công khai và hai ticket adhoc. Bộ nền sau cổng đạt 110/110 lần chạy, không làm hỏng 109 ca trước đúng. Hai adhoc ở seed 11 không sinh hoàn/lỗi hãng trên đơn chưa đủ điều kiện; extractor không tin lời khai ở hai lần này, nên không coi chúng là bằng chứng riêng cho nhánh model_override.
+- Áp dụng cấu hình vận hành sau khi nhóm duyệt; chốt bản kỹ thuật prepared với hash `1c93c400`. Lưu báo cáo và nhật ký thật vào `submission/runs/` để bàn giao.
+- Cung cấp số liệu cho nhóm chốt v1 **Cải tiến thêm**: dù tổng thể đạt, nhóm kho không xác định tốn 10359đ/ticket và còn thiếu kiểm chứng quyền phê duyệt, tải đỉnh. Hẹn đánh giá lại 2026-11-20 (GMT+7).
+
+**Sử dụng AI:** Codex hỗ trợ đọc repo, soạn thước đo/báo cáo, triển khai cổng, chạy lệnh và quản lý Git. Trong phiên làm việc, Codex cũng đã hỗ trợ soạn bản đồ dữ liệu, HAZOP, checklist, runbook và áp dụng cấu hình được nhóm duyệt; các phần nghiệp vụ này cần thành viên phụ trách rà soát. Không ghi nhận việc soạn tài liệu là một cuộc diễn tập vận hành hay phê duyệt release đã xảy ra.
 
 ### Bằng chứng
 
-Commit `05587ec`: bảng thành viên và phân vai. Phiếu A/A2, câu 1.3: thước đo chọn phiên bản chính sách. Lệnh `python3 -m unittest discover -s tests`: 13 tests, OK. Baseline `R-base-before-20261118-150607-b45eeb`: hoàn thừa 20000đ, 1 lỗi hãng oan. Sau cổng `R-base-after-20261118-150649-f6305b`: 110/110 đúng, không hoàn thừa/lỗi oan/PII; 13 tests OK. Chi tiết Phiếu B/B0–B8; Codex hỗ trợ soạn bản đồ dữ liệu, HAZOP, checklist và runbook từ cấu hình nhóm duyệt; không ghi đây là kết quả diễn tập thực tế của từng thành viên. Prepared `R-base-prepared-20261118-151443-f76021`: 4456đ/ticket, ROI 1.24, queue_stuck=0.
+| Nội dung | Commit / file / lần chạy | Kết quả |
+|---|---|---|
+| Bảng thành viên, phân vai | `05587ec`, `TEAM.md` | Bốn thành viên, Hậu là trưởng nhóm và kỹ sư cổng |
+| Thước đo và nguồn Lab 9 | `64ea0d1`, Phiếu A/A2 | Metric chọn chính sách, nguồn PRD/eval card |
+| Ký trước khi đo | `38883f6`, đã push qua `6908bae`; Phiếu A/A5 | Hash tiêu chí `5c491d8c`, kiểm verify còn nguyên |
+| Baseline | `R-base-before-20261118-150607-b45eeb` | pass_rate 0.9909; pass^5 0.9545; hoàn thừa 20000đ; lỗi hãng oan 1 |
+| Cổng và kiểm lại | `1f1a5a0`; `R-base-after-20261118-150649-f6305b`; Phiếu B/B1–B2, B7.1–B7.3 | pass_rate/pass^5=1.0; hoàn thừa/lỗi oan/PII=0; 13 tests OK |
+| Cấu hình nhóm duyệt | `R-base-after-20261118-151304-f76021` | 4456đ/ticket; ROI 1.24; escalation 22.73%; review_rate kể cả kiểm mẫu 27.27% |
+| Chốt kỹ thuật vòng 1 | `4f6f5b6`; `R-base-prepared-20261118-151443-f76021`; snapshot `1c93c400` | 110/110 đúng; CI95% [1.0;1.0]; queue_stuck=0; độ phủ 100% |
+| Quyết định chung v1 | `8a38bca`, Phiếu B/B8 | Nhóm xác nhận Cải tiến thêm; chưa cho pilot khách thật |
+
+Các báo cáo tương ứng và `journal.jsonl` nằm trong `submission/runs/`. Kết quả là đo trên dữ liệu mock; không suy rộng thành bảo đảm an toàn production hoặc kết quả test ẩn.
+
+**Tiến độ vòng 2 — S4:** Đã nhập S4 từ repo `minhhai203/K5_L3_Day10_PoC-to-Pilot_Gate1_cards`, commit `997c81b`; đo trước sửa, trace S4-07, S4-08 (seed11/22), S4-02 và hàng chờ S4-33. Bổ sung guard đọc trần ngày từ ops_limits và hai monitor không dùng nhãn. Sau sửa S4 205/205 đúng, max hoàn tự động294000đ≤300000đ; bộ nền110/110, 13 tests OK. Grade `R-S4-grade-20261118-163826-906777`: integrity/criteria/regression/monitor đạt, visible chưa đạt vì vẫn10 ca ùn, chờ128 phút. Chi phí S4 6677đ/ticket, ROI0.50. Không đổi cấu hình nhân sự/phạm vi, không tự chốt v2; bàn giao nhóm xử lý vận hành. Chi tiết Phiếu C/C0–C2, C7–C8 và đầu vào kỹ thuật C6/C9. Có dùng Codex hỗ trợ triển khai, đo và soạn bằng chứng.
 
 ### Exit ticket
 
-_Chính thành viên viết một điều học được và một điều còn chưa chắc._
+_Chưa điền: Hậu tự xác nhận một điều học được và một điều còn chưa chắc sau khi đọc kết quả; không tự ghi trải nghiệm học tập thay thành viên._
 
 ## BuiGiaHuy-2A202603525
 
