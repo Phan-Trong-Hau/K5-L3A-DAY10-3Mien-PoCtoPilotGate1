@@ -30,8 +30,8 @@ rồi mới chạy đánh giá. Khối 1 không sửa code.
 
 ### Câu 1.2 · Mục tiêu nhìn từ hai người
 
-- Chị Oanh, kế toán đối soát (không dùng trợ lý, nhưng phải khớp sổ với hãng và shop mỗi tuần): Mọi khoản hoàn và lỗi hãng truy được về đơn, chính sách và phê duyệt; không ghi trùng hoặc ghi oan.
-- Chị Hạnh, trưởng ca CSKH (phải duyệt những ca trợ lý chuyển sang): Ca cần người có lý do rõ, người nhận chịu trách nhiệm và được nhận xử lý trong SLA 60 phút; không ép tự động để giảm tỉ lệ escalation.
+- Chị Oanh, kế toán đối soát (không dùng trợ lý, nhưng phải khớp sổ với hãng và shop mỗi tuần): Mọi giao dịch hoàn tiền tự động và ghi lỗi hãng vận chuyển đều phải có bút toán đầy đủ trên sổ cái (ledger), đối chiếu khớp với mã đơn hàng (`order_id`) và lịch sử tracking; số lỗi ghi oan cho hãng vận chuyển phải bằng 0 (`wrongful_carrier_faults_max = 0`) để không xảy ra tranh chấp công nợ khi đối soát hàng tuần; tổng tiền hoàn tự động không vượt ngân sách tài chính mỗi ngày (`daily_auto_refund_budget_vnd = 2.000.000đ`).
+- Chị Hạnh, trưởng ca CSKH (phải duyệt những ca trợ lý chuyển sang): Lượng ca chuyển sang cho người duyệt (escalation) nằm trong tầm kiểm soát công suất của ca trực (không vượt quá 6 ca/giờ/người trực theo `review_capacity_per_reviewer_per_hour`), không để ticket tồn đọng quá hạn SLA 60 phút (`queue_stuck_max = 0`); mỗi ca chuyển sang phải kèm lý do cụ thể và trích dẫn dữ liệu rõ ràng (decision note) để thời gian thẩm định lại chỉ tốn 0,4 đơn vị thời gian thay vì phải tra cứu thủ công từ đầu.
 
 ---
 
@@ -54,12 +54,12 @@ trợ lý có đang gây thiệt hại cho bên ngoài LogiX không; không có 
 
 | | Offline, cho MỘT bước (câu 1.3) | Telemetry production (câu 1.4) |
 |---|---|---|
-| **Bước / hành vi được đo** | Chọn phiên bản chính sách hoàn tiền có hiệu lực tại ngày xử lý. | Ghi lỗi hãng có căn cứ. |
-| **Thước đo** (một câu, có đơn vị) | Tỉ lệ lần chọn sai phiên bản chính sách, đơn vị %. | Số bản ghi lỗi hãng không có nguyên nhân tracking phù hợp hoặc không có độ trễ đủ điều kiện, đơn vị bản ghi. |
-| **Dữ liệu** (lấy ở đâu, bao nhiêu, ai gán nhãn) | Sau khi ký tiêu chí: sự kiện `policy.policy_id` trong trace của 22 ticket × 5 seed; đối chiếu `data/world.json` (`policies`, `as_of`). Hậu đối chiếu bằng `H.effective_policy`, Huy kiểm tra lại quy tắc ngày hiệu lực. Đây là kế hoạch đo, chưa có kết quả. | Luồng sự kiện file_carrier_fault, tracking gốc, chính sách hiệu lực; không cần nhãn người, Thịnh/Bộ theo dõi đối soát. |
-| **Cách tính** (công thức, mẫu số, cách xử lý ca thiếu dữ liệu) | 100 × số lần `policy_id` khác chính sách hiệu lực / số lần có sự kiện `policy` và xác định được đúng một chính sách hiệu lực. Lần không tới bước chọn chính sách đếm riêng; ngày không có hoặc có nhiều chính sách hiệu lực ghi là lỗi dữ liệu và loại khỏi mẫu số. Nếu mẫu số bằng 0, báo không đủ dữ liệu. | Đếm từng fault row không đối chiếu được đúng kiện hàng hoặc không thỏa H.carrier_at_fault; dữ liệu thiếu cũng tính là cần điều tra, đếm riêng nguyên nhân thiếu. |
-| **Khung thời gian / ngưỡng báo động** | (không áp dụng) | Theo dõi liên tục, tổng hợp mỗi ngày; từ 1 bản ghi bất thường báo động và tạm tắt chức năng liên quan theo stop_condition. |
-| **Điểm mù** (thước đo này KHÔNG thấy gì) | Không phát hiện nội dung chính sách trong DB sai, chọn sai kiện hàng, tính sai số tiền dù chọn đúng phiên bản, hoặc lỗi ở lệnh ghi sau đó. | Không phát hiện tracking vốn sai, lỗi hãng không được ghi, hoặc khoản hoàn sai không sinh lỗi hãng. |
+| **Bước / hành vi được đo** | Chọn phiên bản chính sách hoàn tiền có hiệu lực tại ngày xử lý. | Ghi lỗi và thông báo cho hãng vận chuyển (`file_carrier_fault` + `notify_carrier`) |
+| **Thước đo** (một câu, có đơn vị) | Tỉ lệ lần chọn sai phiên bản chính sách, đơn vị %. | Tỉ lệ (%) biên bản ghi lỗi hãng do trợ lý tự động tạo bị hãng vận chuyển phản đối / yêu cầu đối soát lại |
+| **Dữ liệu** (lấy ở đâu, bao nhiêu, ai gán nhãn) | Sau khi ký tiêu chí: sự kiện `policy.policy_id` trong trace của 22 ticket × 5 seed; đối chiếu `data/world.json` (`policies`, `as_of`). Hậu đối chiếu bằng `H.effective_policy`, Huy kiểm tra lại quy tắc ngày hiệu lực. Đây là kế hoạch đo, chưa có kết quả. | Log production của `file_carrier_fault` và `notify_carrier` (`ticket_id`, `carrier_id`, `fault_id`) ghép với ticket/email khiếu nại từ hãng gửi về kế toán đối soát (`NV-OANH`); không có nhãn đúng/sai sẵn |
+| **Cách tính** (công thức, mẫu số, cách xử lý ca thiếu dữ liệu) | 100 × số lần `policy_id` khác chính sách hiệu lực / số lần có sự kiện `policy` và xác định được đúng một chính sách hiệu lực. Lần không tới bước chọn chính sách đếm riêng; ngày không có hoặc có nhiều chính sách hiệu lực ghi là lỗi dữ liệu và loại khỏi mẫu số. Nếu mẫu số bằng 0, báo không đủ dữ liệu. | `(Số fault_id do trợ lý tự tạo bị hãng khiếu nại trong kỳ) / (Tổng số fault_id trợ lý đã ghi và gửi notify_carrier trong kỳ) × 100%`. Ca đã chuyển người duyệt hoặc thiếu `fault_id` loại khỏi mẫu số và đếm riêng |
+| **Khung thời gian / ngưỡng báo động** | (không áp dụng) | Cửa sổ trượt 24 giờ (theo dõi thêm 7 ngày do luật `suspend_after_strikes_7d = 3`); báo động đỏ và tạm khóa tự động `file_carrier_fault` nếu tỉ lệ khiếu nại > 5% trong 24h hoặc có ≥ 2 khiếu nại cho cùng 1 hãng trong ngày |
+| **Điểm mù** (thước đo này KHÔNG thấy gì) | Không phát hiện nội dung chính sách trong DB sai, chọn sai kiện hàng, tính sai số tiền dù chọn đúng phiên bản, hoặc lỗi ở lệnh ghi sau đó. | Không thấy ca hãng bị ghi lỗi oan nhưng chưa kịp/không gửi phản đối (độ trễ tín hiệu), và không phát hiện được ca lộ PII hay hoàn tiền sai cho khách hàng/shop |
 
 **Ví dụ mẫu (bước "chọn độ trễ" của agent, đừng chép):**
 Thước đo: tỉ lệ lần chạy mà độ trễ agent dùng để tính tiền khác độ trễ theo tracking DB. Dữ liệu: sự kiện `proposal.delay_days_used`

@@ -82,15 +82,15 @@ _Chính thành viên viết một điều học được và một điều còn 
 
 ### Phần việc phụ trách
 
-Vận hành và pháp lý.
+Vận hành và pháp lý. Phụ trách Câu 1.2 (Phiếu A mục A1 - mục tiêu từ góc nhìn chị Oanh và chị Hạnh), cùng nhóm xây dựng tiêu chí rủi ro vận hành, HAZOP và quản lý runbook.
 
 ### Đóng góp cụ thể
 
-_Chính thành viên bổ sung sau khi thực hiện; ghi rõ phần việc có dùng AI._
+Đã hoàn thành câu 1.2 trong Phiếu A mục A1: xác định rõ mục tiêu vận hành và đối soát từ góc nhìn của chị Oanh (Kế toán đối soát) và chị Hạnh (Trưởng ca CSKH), liên kết trực tiếp với các giới hạn thực tế trong `data/world.json` (`ops_limits`, `ops_facts`: SLA 60 phút, công suất 6 ca/giờ, trần ngân sách ngày 2.000.000đ). Có dùng trợ lý AI hỗ trợ rà soát dữ kiện và thuật ngữ.
 
 ### Bằng chứng
 
-_Chính thành viên bổ sung mã commit, mã lần chạy hoặc dòng trong phiếu._
+Phiếu A (`templates/form-a-criteria.md`), mục A1, Câu 1.2.
 
 ### Exit ticket
 
