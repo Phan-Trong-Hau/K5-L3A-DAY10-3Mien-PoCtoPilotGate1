@@ -30,8 +30,8 @@ rồi mới chạy đánh giá. Khối 1 không sửa code.
 
 ### Câu 1.2 · Mục tiêu nhìn từ hai người
 
-- Chị Oanh, kế toán đối soát (không dùng trợ lý, nhưng phải khớp sổ với hãng và shop mỗi tuần): …
-- Chị Hạnh, trưởng ca CSKH (phải duyệt những ca trợ lý chuyển sang): …
+- Chị Oanh, kế toán đối soát (không dùng trợ lý, nhưng phải khớp sổ với hãng và shop mỗi tuần): Mọi giao dịch hoàn tiền tự động và ghi lỗi hãng vận chuyển đều phải có bút toán đầy đủ trên sổ cái (ledger), đối chiếu khớp với mã đơn hàng (`order_id`) và lịch sử tracking; số lỗi ghi oan cho hãng vận chuyển phải bằng 0 (`wrongful_carrier_faults_max = 0`) để không xảy ra tranh chấp công nợ khi đối soát hàng tuần; tổng tiền hoàn tự động không vượt ngân sách tài chính mỗi ngày (`daily_auto_refund_budget_vnd = 2.000.000đ`).
+- Chị Hạnh, trưởng ca CSKH (phải duyệt những ca trợ lý chuyển sang): Lượng ca chuyển sang cho người duyệt (escalation) nằm trong tầm kiểm soát công suất của ca trực (không vượt quá 6 ca/giờ/người trực theo `review_capacity_per_reviewer_per_hour`), không để ticket tồn đọng quá hạn SLA 60 phút (`queue_stuck_max = 0`); mỗi ca chuyển sang phải kèm lý do cụ thể và trích dẫn dữ liệu rõ ràng (decision note) để thời gian thẩm định lại chỉ tốn 0,4 đơn vị thời gian thay vì phải tra cứu thủ công từ đầu.
 
 ---
 
