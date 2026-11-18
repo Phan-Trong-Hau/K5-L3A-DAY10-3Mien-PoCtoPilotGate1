@@ -8,10 +8,10 @@
   ],
   "incident": "S4",
   "decision_v1": "Cải tiến thêm",
-  "decision_v2": "",
+  "decision_v2": "Cải tiến thêm",
   "three_lines": {
-    "environment_assumption": "",
-    "reduce_or_prevent": "",
-    "measure_in_pilot": ""
+    "environment_assumption": "Thiết kế của đội đang giả định rằng trong một đợt cao điểm sale, lưu lượng ca cần duyệt sẽ không vượt quá công suất 2 người trực (12 ca/giờ) với chi phí kiểm mẫu 10% kèm decision_note, và các đơn vị vận hành/điểm phát luôn nhập đúng delivered_date, delay_cause vào tracking DB — cả hai điều này có thể sai khi bão đơn hoặc lỗi quét hàng loạt xảy ra ngoài thực tế.",
+    "reduce_or_prevent": "Với dữ liệu trong tầm kiểm soát của hệ thống (guards.py + daily_refund_cap_vnd = 300.000đ), gate ngăn được hoàn tiền sai (0đ), lỗi ghi oan hãng (0 lần) và lộ PII (0 lần) trên luồng mô phỏng tuần tự nhờ đối chiếu trực tiếp với tracking DB và chính sách hiệu lực; tuy nhiên với các yếu tố ngoài phần mềm như ùn hàng chờ (queue_stuck = 0, wait_max = 38.0 phút với 2 người trực) và race condition đa luồng, gate chỉ giảm khả năng xảy ra tác hại chứ không ngăn tuyệt đối nếu tải thực tế vượt ngưỡng 12 ca/giờ.",
+    "measure_in_pilot": "Trong pilot thật trước Bước đánh giá 2, cần đo lại phân phối lưu lượng theo từng phút thực tế (arrive_min), tỉ lệ lỗi 429/timeout thật của LLM (policy_fail_open_rate), thời gian xử lý thực tế của NV-HANH khi đọc decision_note (xem có đạt 0,4 ca = 4 phút hay không), tỉ lệ kiểm lại tự động của nhân viên CSKH, độ chính xác dữ liệu delay_cause tại điểm phát, và chi phí thực của phân khúc thiếu mã đơn (kho ?)."
   }
 }

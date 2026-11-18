@@ -1,11 +1,11 @@
-# Tự kiểm tra sự cố S4 · FAIL
+# Tự kiểm tra sự cố S4 · PASS-VISIBLE (chưa chạy test ẩn)
 
 *Đây là kết quả TỰ KIỂM TRA của bàn, không phải điểm. Bài được một team chấm tự động chấm lại sau buổi học.*
 
-- Mã lần chạy: `R-S4-grade-20261118-163826-906777` · bàn: `K5-L3A-DAY10-3Mien-PoCtoPilotGate1` · grader `lab10-1.0` · 0.509s
-- Ba mốc: base `R-S4-before-20261118-163826-906777` · prepared `R-S4-prepared-20261118-163826-906777` · after `R-S4-after-20261118-163826-906777` (report + trace trong runs/)
+- Mã lần chạy: `R-S4-grade-20261118-171005-7810a2` · bàn: `K5-L3A-DAY10-3Mien-PoCtoPilotGate1` · grader `lab10-1.0` · 0.65s
+- Ba mốc: base `R-S4-before-20261118-171005-7810a2` · prepared `R-S4-prepared-20261118-171006-7810a2` · after `R-S4-after-20261118-171006-7810a2` (report + trace trong runs/)
 - Mốc prepared (cổng vòng 1): đã chốt `1c93c400`, còn nguyên
-- Hash code đội (guards + monitors + switches + cổng vận hành): `9067770a7146`
+- Hash code đội (guards + monitors + switches + cổng vận hành): `7810a205164a`
 - Hash Bản tiêu chí chấp nhận: `5c491d8c673a` · đã ký: `5c491d8c673a` · KHÔNG ĐỔI
 - Thẻ đang kiểm: `S4` · dòng "Thẻ đã bốc" bàn ghi trong phiếu: S4 · khớp
 
@@ -13,25 +13,25 @@
 |---|---|---|
 | 1 integrity | ✅ | file khoá bị đổi: không |
 | 2 criteria | ✅ | đã ký, còn nguyên |
-| 3 visible | ❌ | base có vấn đề: True; after sạch: False; ticket còn hỏng: không; trần còn vượt: ['hàng chờ: 10 ca bị ùn (chờ quá 60 phút hoặc hết ca chưa tới lượt)', 'chờ lâu nhất 128.0 phút > mức bàn đặt 60 phút'] |
+| 3 visible | ✅ | base có vấn đề: True; after sạch: True; ticket còn hỏng: không; trần còn vượt: không |
 | 4 hidden | — | máy này không có bài kiểm tra ẩn (team chấm sẽ chạy sau buổi học) |
 | 5 regression | ✅ | bộ nền pass_rate 0.9909 → 1.0; ca mới hỏng: không |
-| 6 monitor | ✅ | metric mới: ['max_review_wait_minutes', 'policy_fail_open_rate']; sáng đèn: [('max_review_wait_minutes', 'before', 0.0, 78.0), ('max_review_wait_minutes', 'after', 0.0, 128.0), ('policy_fail_open_rate', 'before', 0.0, 0.185366), ('policy_fail_open_rate', 'after', 0.0, 0.185366)] |
+| 6 monitor | ✅ | metric mới: ['max_review_wait_minutes', 'policy_fail_open_rate']; sáng đèn: [('max_review_wait_minutes', 'before', 0.0, 78.0), ('max_review_wait_minutes', 'after', 0.0, 38.0), ('policy_fail_open_rate', 'before', 0.0, 0.185366), ('policy_fail_open_rate', 'after', 0.0, 0.185366)] |
 
 **Kinh doanh · vận hành · pháp lý trên gói sự cố bàn nhìn thấy** (tiền tính cho một ngày giả lập)
 
 | Chỉ số | base | prepared | after |
 |---|---|---|---|
 | tỉ lệ chuyển người duyệt | 0.3659 | 0.5171 | 0.5366 |
-| thời gian chờ trung bình (phút) | 37.9 | 48.8 | 47.0 |
-| thời gian chờ lâu nhất (phút) | 78.0 | 128.0 | 128.0 |
-| số ca bị ùn | 4 | 10 | 10 |
-| số người trực · ca duyệt được mỗi giờ | 1 · 6 | 1 · 6 | 1 · 6 |
+| thời gian chờ trung bình (phút) | 37.9 | 48.8 | 12.3 |
+| thời gian chờ lâu nhất (phút) | 78.0 | 128.0 | 38.0 |
+| số ca bị ùn | 4 | 10 | 0 |
+| số người trực · ca duyệt được mỗi giờ | 1 · 6 | 1 · 6 | 2 · 12 |
 | nhân viên kiểm lại quyết định tự động (%) | 0 | 10 | 10 |
-| chi phí mỗi ticket (đ) · làm tay | 4980 · 10000 | 6486 · 10000 | 6677 · 10000 |
+| chi phí mỗi ticket (đ) · làm tay | 4980 · 10000 | 6486 · 10000 | 7409 · 10000 |
 | tiền LLM ticket đắt nhất (đ) · trần | 871 · 1500 | 971 · 1500 | 971 · 1500 |
-| tiết kiệm ròng mỗi ngày (đ) | 173822 | 144082 | 136242 |
-| ROI | 0.85 | 0.54 | 0.5 |
+| tiết kiệm ròng mỗi ngày (đ) | 173822 | 144082 | 106242 |
+| ROI | 0.85 | 0.54 | 0.35 |
 | tổng hoàn tự động một ngày (đ) · ngân sách | 466000 · 300000 | 378000 · 300000 | 294000 · 300000 |
 | tiền hoàn sai ngày tệ nhất (đ) · ngân sách | 44000 · 300000 | 0 · 300000 | 0 · 300000 |
 | độ phủ pilot (phần ticket trợ lý xử lý) | 1.0 | 1.0 | 1.0 |
@@ -61,12 +61,12 @@
 | thời gian chờ trung bình (phút) | 0.0 | 0.0 | 0.0 |
 | thời gian chờ lâu nhất (phút) | 0.0 | 0.0 | 0.0 |
 | số ca bị ùn | 0 | 0 | 0 |
-| số người trực · ca duyệt được mỗi giờ | 1 · 6 | 1 · 6 | 1 · 6 |
+| số người trực · ca duyệt được mỗi giờ | 1 · 6 | 1 · 6 | 2 · 12 |
 | nhân viên kiểm lại quyết định tự động (%) | 0 | 10 | 10 |
-| chi phí mỗi ticket (đ) · làm tay | 4203 · 10000 | 4456 · 10000 | 4456 · 10000 |
+| chi phí mỗi ticket (đ) · làm tay | 4203 · 10000 | 4456 · 10000 | 5820 · 10000 |
 | tiền LLM ticket đắt nhất (đ) · trần | 670 · 1500 | 770 · 1500 | 770 · 1500 |
-| tiết kiệm ròng mỗi ngày (đ) | 123542 | 121962 | 121962 |
-| ROI | 1.34 | 1.24 | 1.24 |
+| tiết kiệm ròng mỗi ngày (đ) | 123542 | 121962 | 91962 |
+| ROI | 1.34 | 1.24 | 0.72 |
 | tổng hoàn tự động một ngày (đ) · ngân sách | 155000 · 2000000 | 155000 · 2000000 | 155000 · 2000000 |
 | tiền hoàn sai ngày tệ nhất (đ) · ngân sách | 20000 · 2000000 | 0 · 2000000 | 0 · 2000000 |
 | độ phủ pilot (phần ticket trợ lý xử lý) | 1.0 | 1.0 | 1.0 |
@@ -92,10 +92,9 @@
 
 **Trần và ngưỡng ở mốc after (nền của quyết định Gate 1 v2)**
 
-- VƯỢT TRẦN: hàng chờ: 10 ca bị ùn (chờ quá 60 phút hoặc hết ca chưa tới lượt) (trên visible)
-- VƯỢT TRẦN: chờ lâu nhất 128.0 phút > mức bàn đặt 60 phút (trên visible)
-- NGƯỠNG ĐÃ KÝ CHƯA ĐẠT: queue_stuck ≤ 0 (thực tế 10, trên visible)
-- KHÔNG đủ căn cứ để chọn 'Tiếp tục'. Thu hẹp, Cải tiến thêm hoặc Dừng, kèm lý do và con số, vẫn là quyết định đạt.
+- Không vượt trần kinh doanh / vận hành nào.
+- Mọi ngưỡng đã ký đều đạt.
+- Được phép cân nhắc 'Tiếp tục'.
 
 | Bộ | Chỉ số | base | prepared | after | Chênh after − base |
 |---|---|---|---|---|---|

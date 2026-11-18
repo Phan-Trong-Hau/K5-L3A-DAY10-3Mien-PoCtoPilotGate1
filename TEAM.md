@@ -70,21 +70,25 @@ _Chưa điền: Hậu tự xác nhận một điều học được và một đ
 
 ### Phần việc phụ trách
 
-Sản phẩm và kinh doanh. Phụ trách Khối 1 (mục tiêu hệ thống câu 1.1, đọc khoảng tin cậy câu 1.5, câu tiêu chí câu 1.6 và chốt ngưỡng `config/acceptance_criteria.json`), Khối 2A (bản đồ dữ liệu và phân tích drift câu 2.3), Khối 2B (cổng kinh doanh `business` câu 2.9 trong `config/operating_gates.json`), và cùng nhóm chốt quyết định Gate 1 v1/v2.
+Sản phẩm và kinh doanh. Phụ trách Khối 1 (mục tiêu hệ thống câu 1.1, đọc khoảng tin cậy câu 1.5, câu tiêu chí câu 1.6 và chốt ngưỡng `config/acceptance_criteria.json`), Khối 2A (bản đồ dữ liệu và phân tích drift câu 2.3), Khối 2B (cổng kinh doanh `business` câu 2.9 trong `config/operating_gates.json`), và Khối 3 Vòng 2 trên thẻ **S4** (cập nhật trần hoàn tự động ngày sale, cân bằng chi phí/ROI khi tăng người trực, điền Phiếu C và chốt quyết định Gate 1 v2).
 
 ### Đóng góp cụ thể
 
-- Cùng nhóm thảo luận, rà soát dữ liệu `data/world.json` và chốt bộ ngưỡng chấp nhận ở Khối 1 (`pass_rate_min = 0.97`, `pass_k_min = 0.95`, các chỉ số an toàn `= 0`, `escalation_rate_max = 0.25`, `cost_per_ticket_vnd_max = 8000`, `roi_min = 0.25`, `queue_stuck_max = 0`) trước khi ký ở commit `38883f6`.
-- Soạn thảo và đối chiếu phương án cho Bản đồ dữ liệu + concept drift `REFUND-v3` → `REFUND-v4` ngày `2026-12-01` (Phiếu B mục B3) và 4 cổng kinh doanh (`daily_refund_cap_vnd = 2000000`, `cost_budget_per_ticket_vnd = 1500`, `pilot_scope` all 100%, `roi_min = 0.25` ở mục B7.4); đồng bộ theo bản chốt Vòng 1 của nhóm ở commit `8a38bca` (`snapshot 1c93c400`, quyết định `v1 = Cải tiến thêm`).
-- Có sử dụng trợ lý AI để đọc hiểu đề bài, rà soát `data/world.json`, kiểm tra công thức chi phí/ROI và soạn thảo nội dung rà soát cho Phiếu A/B.
+- **Vòng 1:** Cùng nhóm thảo luận, rà soát dữ liệu `data/world.json` và chốt bộ ngưỡng chấp nhận ở Khối 1 (`pass_rate_min = 0.97`, `pass_k_min = 0.95`, các chỉ số an toàn `= 0`, `escalation_rate_max = 0.25`, `cost_per_ticket_vnd_max = 8000`, `roi_min = 0.25`, `queue_stuck_max = 0`) trước khi ký ở commit `38883f6`. Soạn thảo và đối chiếu Bản đồ dữ liệu + concept drift `REFUND-v3` → `REFUND-v4` ngày `2026-12-01` (Phiếu B mục B3) và 4 cổng kinh doanh ở mục B7.4; đồng bộ theo bản chốt Vòng 1 của nhóm ở commit `8a38bca` (`snapshot 1c93c400`, quyết định `v1 = Cải tiến thêm`).
+- **Vòng 2 (Thẻ S4):**
+  - Phân tích đánh đổi chi phí – ROI – công suất ca trực trên gói S4 khi chuyển từ `1` người (`10` ca ùn, chờ `128.0` phút) lên `2` người (`7.409đ/ticket ≤ 8.000đ`, `ROI = 0.35 ≥ 0.25`, `0` ca ùn, chờ `38.0` phút) so với `3` người (`8.140đ/ticket > 8.000đ`, `ROI = 0.23 < 0.25` — vi phạm ngưỡng đã ký).
+  - Cập nhật `config/operating_gates.json`: điều chỉnh `business.daily_refund_cap_vnd = 300000` (khớp trần ngày sale 11.11 của Finance trong `incidents/S4/world_patch.json`) và phối hợp tăng `operations.reviewers_on_shift = 2`, `review_capacity_per_hour = 12`.
+  - Hoàn thiện các phần kinh doanh/vận hành/phân tích trong Phiếu C (`templates/form-c-incident.md` mục `C0, C1, C4, C5, C6, C7, C9, C10, C11, C12`), cập nhật `submission/submission.json`, và chốt quyết định **v2 = Cải tiến thêm** cùng 3 dòng bắt buộc dù `grade` đạt `PASS-VISIBLE` (vì `S4 escalation_rate = 0.5317 > 0.25` và `base kho ? = 10.359đ > 10.000đ`).
+- **Sử dụng AI:** Có sử dụng trợ lý AI để đọc hiểu đề bài, mô phỏng phương án số người trực (`1..4` người), rà soát `data/world.json` và `incidents/S4/world_patch.json`, soạn thảo nội dung Phiếu A/B/C và kiểm tra tính nhất quán bài nộp.
 
 ### Bằng chứng
 
-Commit ký tiêu chí `38883f6` (hash `5c491d8c`); Phiếu A (`templates/form-a-criteria.md`) mục A1/A3/A4; Phiếu B (`templates/form-b-evaluation-gates.md`) mục B3, B7.4 và B8 (chốt v1 **Cải tiến thêm** với `R-base-after-20261118-151304-f76021` và `R-base-prepared-20261118-151443-f76021`); khối `"business"` trong `config/operating_gates.json`.
+Commit ký tiêu chí `38883f6` (hash `5c491d8c`); Phiếu A (`templates/form-a-criteria.md`) mục A1/A3/A4; Phiếu B (`templates/form-b-evaluation-gates.md`) mục B3, B7.4 và B8 (`v1 = Cải tiến thêm`); `config/operating_gates.json` (`daily_refund_cap_vnd = 300000`, `reviewers_on_shift = 2`, `review_capacity_per_hour = 12`); Phiếu C (`templates/form-c-incident.md`) mục C0–C12; lần chạy `R-S4-after-20261118-171004-7810a2`, `R-base-after-20261118-171005-7810a2` và `R-S4-grade-20261118-171005-7810a2` (`PASS-VISIBLE`); `submission/submission.json`.
 
 ### Exit ticket
 
-_Chính thành viên viết một điều học được và một điều còn chưa chắc._
+- **Một điều học được:** Đặt cổng phòng ngừa ở tầng kỹ thuật (`write_gate` chặn `fail_open`) giúp triệt tiêu hoàn toàn hoàn thừa và phạt oan hãng, nhưng trong sản phẩm AI thực tế thì nút thắt kinh doanh & vận hành (trần ngân sách ngày sale bị siết bất ngờ và tải hàng chờ giờ cao điểm vượt công suất người duyệt) vẫn đủ làm hệ thống vỡ SLA nếu không thiết kế đồng bộ cả code, con số cấu hình và quy trình trực ca.
+- **Một điều còn chưa chắc:** Trên dữ liệu thật ngoài production, tỉ lệ `escalation_rate` vào ngày sale (hiện `0.5317` trên S4) nếu kéo dài hoặc lượng ticket tăng quá `3x` (> 12 ca/giờ) sẽ đòi hỏi lọc sớm ca `DAMAGED`/`NOT_RECEIVED` và `kho ?` — chưa chắc ngưỡng `review_sampling_pct = 10%` và `decision_note` trong thực tế có giữ được tốc độ duyệt `0,4 ca` (4 phút/ca) như mô phỏng hay không.
 
 ## NgoDucThinh-2A202603548
 
