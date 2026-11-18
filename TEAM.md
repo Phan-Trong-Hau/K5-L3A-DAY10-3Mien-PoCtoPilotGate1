@@ -90,23 +90,22 @@ _Chính thành viên viết một điều học được và một điều còn 
 
 ### Phần việc phụ trách
 
-Vận hành và pháp lý. Phụ trách Câu 1.4 (Phiếu A, mục A2 - Telemetry production), góp ý Pre-mortem góc nhìn Vận hành & Pháp lý (Phiếu B, mục B6, Câu 2.5), rào chắn pháp lý (`config/operating_gates.json` mục `legal`) và Runbook phần 1–3 + Giờ cao điểm (Phiếu B, mục B7.5–B7.6); tiếp theo là phần việc Vận hành & Pháp lý ở Khối 3 (Phiếu C).
+Vận hành và pháp lý. Phụ trách Câu 1.4 (Phiếu A, mục A2 - Telemetry production), góp ý Pre-mortem góc nhìn Vận hành & Pháp lý (Phiếu B, mục B6, Câu 2.5), rào chắn pháp lý (`config/operating_gates.json` mục `legal`) và Runbook phần 1–3 + Giờ cao điểm (Phiếu B, mục B7.5–B7.6); ở Vòng 2 (thẻ S4) phụ trách bổ sung B7.6 sau S4 và hoàn thiện Phiếu C mục C4 (HAZOP S4), C6 (Fault tree trước sửa), C9 (Fault tree sau sửa) và C11 (Runbook 4–5).
 
 ### Đóng góp cụ thể
 
-- Đã hoàn thành **Câu 1.4 (Phiếu A, mục A2)**: thiết kế chỉ số telemetry production cho luồng `file_carrier_fault` + `notify_carrier` (tỉ lệ biên bản ghi lỗi bị hãng phản đối/đối soát lại qua `NV-OANH`, cửa sổ trượt 24h & 7 ngày theo `suspend_after_strikes_7d = 3`, kèm điểm mù tín hiệu).
-- Kiểm tra tính nhất quán giữa Câu 1.4 với Câu 1.2, 1.6 và `config/acceptance_criteria.json`.
-- Tham gia bổ sung góc nhìn Vận hành & Pháp lý ở **Pre-mortem (Câu 2.5, mục B6)** và soạn phương án rào chắn pháp lý (`legal.pii_fields_blocked_to_third_party`, `legal.carrier_fault_requires_recorded_cause`) cùng **Runbook 1–3 & Giờ cao điểm (Câu 2.10, mục B7.5–B7.6)**, đồng bộ với bản chốt vòng 1 của nhóm.
-- Có sử dụng trợ lý AI hỗ trợ rà soát dữ kiện `data/world.json`, kiểm tra cấu trúc phiếu và xử lý conflict Git khi đồng bộ bài nhóm.
+- **Vòng 1:** Hoàn thành **Câu 1.4 (Phiếu A, mục A2)** thiết kế telemetry production cho `file_carrier_fault` + `notify_carrier` (tỉ lệ khiếu nại từ hãng qua `NV-OANH`, cửa sổ 24h & 7 ngày theo `suspend_after_strikes_7d = 3`); kiểm tra nhất quán giữa Câu 1.4 với Câu 1.2, 1.6 và `acceptance_criteria.json`. Tham gia bổ sung góc nhìn Vận hành & Pháp lý ở **Pre-mortem (Câu 2.5, mục B6)** và soạn rào chắn `legal` + **Runbook 1–3 & Giờ cao điểm (Câu 2.10, mục B7.5–B7.6)**, đồng bộ với bản chốt vòng 1 của nhóm.
+- **Vòng 2 (thẻ S4):** . Hoàn thành **C4 (HAZOP S4)**, **C6 (Fault tree trước sửa)**, **C9 (Fault tree sau sửa)** và **C11 (Runbook 4 & Runbook 5)** trên `templates/form-c-incident.md` bám sát dữ kiện `incidents/S4/world_patch.json` và report các mốc `prepared` / `after`.
+.
 
 ### Bằng chứng
 
-- Commit `707c833` (`cau 1.4`) và merge commit `6908bae`.
+- Commit `707c833` (`cau 1.4`), `6908bae` (merge Phiếu A), `13c2952` (`C4&C6`), `3c84494`.
 - Phiếu A (`templates/form-a-criteria.md`), mục A2, Câu 1.4 (cột Telemetry production).
-- Phiếu B (`templates/form-b-evaluation-gates.md`), mục B6 (Câu 2.5) và mục B7.5–B7.6 (Câu 2.10); `config/operating_gates.round1.json` mục `legal` (bản chốt vòng 1 ở commit `4f6f5b6` / `8a38bca`).
+- Phiếu B (`templates/form-b-evaluation-gates.md`), mục B6 (Câu 2.5) và mục B7.5–B7.6 (Câu 2.10, gồm bổ sung sau S4); `config/operating_gates.round1.json` mục `legal` (bản chốt vòng 1 ở commit `4f6f5b6` / `8a38bca`).
+- Phiếu C (`templates/form-c-incident.md`), mục C4, C6, C9 và C11 (Runbook 4–5) gắn với mã lần chạy `R-S4-prepared-20261118-163800-f76021` và `R-S4-after-20261118-163825-906777`.
 
 ### Exit ticket
-
 
 ## DoDuyBo-2A202603591
 
