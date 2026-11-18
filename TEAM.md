@@ -64,19 +64,23 @@ _Chính thành viên viết một điều học được và một điều còn 
 
 ### Phần việc phụ trách
 
-Vận hành và pháp lý.
+Vận hành và pháp lý. Phụ trách Câu 1.4 (Phiếu A, mục A2 - Telemetry production), góp ý Pre-mortem góc nhìn Vận hành & Pháp lý (Phiếu B, mục B6, Câu 2.5), rào chắn pháp lý (`config/operating_gates.json` mục `legal`) và Runbook phần 1–3 + Giờ cao điểm (Phiếu B, mục B7.5–B7.6); tiếp theo là phần việc Vận hành & Pháp lý ở Khối 3 (Phiếu C).
 
 ### Đóng góp cụ thể
 
-_Chính thành viên bổ sung sau khi thực hiện; ghi rõ phần việc có dùng AI._
+- Đã hoàn thành **Câu 1.4 (Phiếu A, mục A2)**: thiết kế chỉ số telemetry production cho luồng `file_carrier_fault` + `notify_carrier` (tỉ lệ biên bản ghi lỗi bị hãng phản đối/đối soát lại qua `NV-OANH`, cửa sổ trượt 24h & 7 ngày theo `suspend_after_strikes_7d = 3`, kèm điểm mù tín hiệu).
+- Kiểm tra tính nhất quán giữa Câu 1.4 với Câu 1.2, 1.6 và `config/acceptance_criteria.json`.
+- Tham gia bổ sung góc nhìn Vận hành & Pháp lý ở **Pre-mortem (Câu 2.5, mục B6)** và soạn phương án rào chắn pháp lý (`legal.pii_fields_blocked_to_third_party`, `legal.carrier_fault_requires_recorded_cause`) cùng **Runbook 1–3 & Giờ cao điểm (Câu 2.10, mục B7.5–B7.6)**, đồng bộ với bản chốt vòng 1 của nhóm.
+- Có sử dụng trợ lý AI hỗ trợ rà soát dữ kiện `data/world.json`, kiểm tra cấu trúc phiếu và xử lý conflict Git khi đồng bộ bài nhóm.
 
 ### Bằng chứng
 
-_Chính thành viên bổ sung mã commit, mã lần chạy hoặc dòng trong phiếu._
+- Commit `707c833` (`cau 1.4`) và merge commit `6908bae`.
+- Phiếu A (`templates/form-a-criteria.md`), mục A2, Câu 1.4 (cột Telemetry production).
+- Phiếu B (`templates/form-b-evaluation-gates.md`), mục B6 (Câu 2.5) và mục B7.5–B7.6 (Câu 2.10); `config/operating_gates.round1.json` mục `legal` (bản chốt vòng 1 ở commit `4f6f5b6` / `8a38bca`).
 
 ### Exit ticket
 
-_Chính thành viên viết một điều học được và một điều còn chưa chắc._
 
 ## DoDuyBo-2A202603591
 
