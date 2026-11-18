@@ -84,15 +84,19 @@ _Chính thành viên viết một điều học được và một điều còn 
 
 ### Phần việc phụ trách
 
-Vận hành và pháp lý. Phụ trách Câu 1.2 (Phiếu A mục A1 - mục tiêu từ góc nhìn chị Oanh và chị Hạnh), cùng nhóm xây dựng tiêu chí rủi ro vận hành, HAZOP và quản lý runbook.
+Vận hành và pháp lý. Phụ trách Câu 1.2 (Phiếu A mục A1 - mục tiêu từ góc nhìn chị Oanh và chị Hạnh); Câu 2.4 (Phiếu B mục B4 HAZOP vòng 1, B5 checklist); Câu 2.10 phần 1 (`operations.pic`, `reviewers_on_shift`, `review_capacity_per_hour`, `max_queue_wait_minutes`); Câu 3.1/C4 (HAZOP của thẻ sự cố vòng 2).
 
 ### Đóng góp cụ thể
 
 Đã hoàn thành câu 1.2 trong Phiếu A mục A1: xác định rõ mục tiêu vận hành và đối soát từ góc nhìn của chị Oanh (Kế toán đối soát) và chị Hạnh (Trưởng ca CSKH), liên kết trực tiếp với các giới hạn thực tế trong `data/world.json` (`ops_limits`, `ops_facts`: SLA 60 phút, công suất 6 ca/giờ, trần ngân sách ngày 2.000.000đ). Có dùng trợ lý AI hỗ trợ rà soát dữ kiện và thuật ngữ.
 
+Câu 2.4: rà soát HAZOP vòng 1 trên `issue_refund` (5 dòng kỹ thuật, có nhánh chưa thấy trên trace: approval INVALID, ghi lặp PERTURBED, policy_check INCAPABLE) và 3 dòng ngoài kỹ thuật (người duyệt, ngân sách, dữ liệu gửi hãng); đối chiếu cột "Hiện có gì ngăn" với code thật (`lab10/guards.py`, `lab10/tools.py`). Ghi nhận hai khoảng hở chuyển sang vòng 2: guard chưa kiểm trần 300.000đ/khách/ngày và 2 lỗi/hãng/ngày trong `ops_limits`; trần ngày của host chỉ tính khoản không có `approval_id`, nên một mã duyệt không hợp lệ cũng đi vòng qua trần.
+
+Câu 2.10 phần 1: đặt `operations.pic = NV-TUNG` (người giữ công tắc trong `staff`), `reviewers_on_shift = 1` (`ops_facts.default_reviewers_on_shift`), `review_capacity_per_hour = 6` (= 1 người × 6 ca/giờ, không vượt sức thật), `max_queue_wait_minutes = 60` (= `ops_limits.review_sla_minutes`). Có dùng trợ lý AI để đối chiếu số với `data/world.json`.
+
 ### Bằng chứng
 
-Phiếu A (`templates/form-a-criteria.md`), mục A1, Câu 1.2.
+Phiếu A (`templates/form-a-criteria.md`), mục A1, Câu 1.2. Phiếu B mục B4, B5 (PIC dòng 8). `config/operating_gates.json` mục `operations`, đã chốt trong snapshot vòng 1 `1c93c400`. Prepared `R-base-prepared-20261118-151443-f76021`: `ops.queue` 1 người, 6 ca/giờ, SLA 60, chờ tối đa 0 phút, `stuck = 0`, `ops.violations` rỗng; 13 tests OK.
 
 ### Exit ticket
 
