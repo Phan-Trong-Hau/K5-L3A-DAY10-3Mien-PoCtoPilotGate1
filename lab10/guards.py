@@ -29,7 +29,10 @@ lab10.helpers: db_delay_days, ticket_parcel, effective_policy, entitlement_vnd, 
 
 Mặc định dưới đây cho qua tất cả (= mốc base).
 """
-from . import helpers as H  # noqa: F401
+from datetime import date
+from math import isfinite
+
+from . import helpers as H
 from .tools import Verdict
 
 
@@ -58,16 +61,6 @@ def write_gate(ctx, action):
     parcel = H.ticket_parcel(order, ctx.ticket, ctx.as_of)
     delay = H.db_delay_days(parcel, ctx.as_of)
     if tool == "issue_refund":
-        # S4: Finance may lower the daily ceiling; always enforce the tighter
-        # source-of-truth limit, without changing the team's operating config.
-        if not action.get("approval_id"):
-            limits = [cap for cap in (
-                ctx.tools.ops_limits().get("daily_auto_refund_budget_vnd"),
-                (ctx.gates or {}).get("business", {}).get("daily_refund_cap_vnd"),
-            ) if cap is not None]
-            if limits and (ctx.tools.auto_refund_today_vnd()
-                           + action.get("amount_vnd", 0) > min(limits)):
-                return Verdict.escalate("vượt trần hoàn tự động hiệu lực trong ngày, chuyển người duyệt")
         # B6 kỹ thuật: quyền lợi phải tính từ DB; không đọc nhãn hay seed.
         if parcel.get("delay_cause") is None and delay > 0:
             return Verdict.escalate("thiếu nguyên nhân trễ trong tracking")
@@ -80,10 +73,69 @@ def write_gate(ctx, action):
                 or action.get("payer", "LOGIX") != "LOGIX"
                 or action.get("basis", "policy") != "policy"):
             return Verdict.escalate("đề xuất hoàn không khớp quyền lợi còn lại hoặc căn cứ chính sách")
+        # An approval ID is authority only after checking its full scope and
+        # remaining amount; merely supplying a string must not bypass caps.
+        approval_id = action.get("approval_id")
+        approved = False
+        if approval_id:
+            matches = ctx.tools.lookup_approvals(approval_id=approval_id)
+            if len(matches) != 1:
+                return Verdict.escalate("không tìm thấy duy nhất phê duyệt")
+            approval = matches[0]
+            try:
+                expires = date.fromisoformat(approval["expires_at"])
+                today = date.fromisoformat(ctx.as_of)
+            except (KeyError, TypeError, ValueError):
+                return Verdict.escalate("thiếu hoặc sai ngày hiệu lực phê duyệt")
+            approver = (ctx.gates or {}).get("operations", {}).get("approver_id")
+            if (approval.get("status") != "valid" or expires < today
+                    or approval.get("ticket_id") != ctx.ticket.get("ticket_id")
+                    or approval.get("order_id") != order["order_id"]
+                    or approval.get("customer_id") != order["customer_id"]
+                    or not approval.get("approver_id")
+                    or (approver and approval.get("approver_id") != approver)):
+                return Verdict.escalate("phê duyệt không hợp lệ về trạng thái, hạn, đối tượng hoặc người duyệt")
+            used = sum(r["amount_vnd"] for r in ctx.tools.ledger_rows(approval_id=approval_id))
+            cap = approval.get("max_vnd")
+            if (isinstance(cap, bool) or not isinstance(cap, (int, float))
+                    or not isfinite(cap) or cap < 0
+                    or used + action["amount_vnd"] > cap):
+                return Verdict.escalate("vượt hạn mức còn lại của phê duyệt")
+            approved = True
+        if not approved:
+            if action["amount_vnd"] > policy["auto_limit_vnd"]:
+                return Verdict.escalate("vượt hạn mức tự động, cần phê duyệt hợp lệ")
+            limits = ctx.tools.ops_limits()
+            daily_caps = [cap for cap in (
+                limits.get("daily_auto_refund_budget_vnd"),
+                (ctx.gates or {}).get("business", {}).get("daily_refund_cap_vnd"),
+            ) if cap is not None]
+            if daily_caps and (ctx.tools.auto_refund_today_vnd()
+                               + action["amount_vnd"] > min(daily_caps)):
+                return Verdict.escalate("vượt trần hoàn tự động hiệu lực trong ngày, chuyển người duyệt")
+            customer_cap = limits.get("max_auto_refund_per_customer_per_day_vnd")
+            # Mock ledger rows have no date. Count undated rows conservatively;
+            # production needs a dated ledger and atomic check-and-write.
+            customer_spent = sum(r["amount_vnd"] for r in ctx.tools.ledger_rows(
+                customer_id=order["customer_id"])
+                if not r.get("approval_id") and r.get("day", ctx.as_of) == ctx.as_of)
+            if customer_cap is not None and customer_spent + action["amount_vnd"] > customer_cap:
+                return Verdict.escalate("vượt trần hoàn tự động mỗi khách trong ngày, cần người duyệt")
+        # Preflight the strike cap before paying: escalation after payment
+        # would leave a partially completed ticket with money already written.
+        strike_cap = ctx.tools.ops_limits().get("max_auto_strikes_per_carrier_per_day")
+        strikes = len(ctx.tools.fault_rows(carrier_id=parcel["carrier_id"]))
+        if (H.carrier_at_fault(policy, parcel, delay)
+                and strike_cap is not None and strikes >= strike_cap):
+            return Verdict.escalate("từ lỗi tiếp theo vượt trần hãng/ngày: chuyển người trước mọi lệnh ghi")
     else:
         # B6 pháp lý: xác minh đúng kiện, đúng hãng và nguyên nhân có ghi nhận.
         if not H.carrier_at_fault(policy, parcel, delay):
             return Verdict.deny("tracking không đủ căn cứ ghi lỗi hãng")
+        strike_cap = ctx.tools.ops_limits().get("max_auto_strikes_per_carrier_per_day")
+        if (strike_cap is not None
+                and len(ctx.tools.fault_rows(carrier_id=parcel["carrier_id"])) >= strike_cap):
+            return Verdict.escalate("vượt số lỗi được tự ghi cho một hãng trong ngày")
         if (action.get("parcel_id") != parcel["parcel_id"]
                 or action.get("carrier_id") != parcel["carrier_id"]
                 or action.get("driver_id") != parcel.get("driver_id")

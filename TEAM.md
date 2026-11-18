@@ -66,6 +66,8 @@ Các báo cáo tương ứng và `journal.jsonl` nằm trong `submission/runs/`.
 
 Sau khi thành viên phụ trách điều chỉnh cấu hình lên 2 người duyệt, công suất12 ca/giờ và trần config300000đ/ngày, báo cáo cuối `R-S4-grade-20261118-171005-7810a2` đạt **PASS-VISIBLE**: S4 205/205 lần chạy đúng, bộ nền110/110; hoàn thừa/lỗi hãng oan/PII bằng0; hoàn tự động tối đa294000đ; chờ tối đa38 phút và0 ca ùn; chi phí7409đ/ticket, ROI0.35, độ phủ100%. Hậu đã pull bản mới và kiểm lại13 tests, hash tiêu chí/snapshot cùng lệnh kiểm bài nộp: **ĐỦ THÀNH PHẦN**. Nhóm giữ v2 **Cải tiến thêm**; không coi PASS-VISIBLE là kết quả test ẩn hoặc phê duyệt pilot thật. Có dùng Codex hỗ trợ triển khai, kiểm tra và viết báo cáo.
 
+**Rà soát bổ sung:** Hoàn thiện guard xác thực phê duyệt (trạng thái, hạn, phạm vi ticket/đơn/khách/người duyệt, hạn mức còn lại); trần hoàn khách/ngày; chặn lỗi hãng thứ3 trước mọi lệnh ghi liên quan. Đã chạy24 kiểm tra trong `submission/validation/guard_boundaries.py`,13 tests công khai và grade `R-S4-grade-20261118-174310-fde69d` đạt PASS-VISIBLE, không regression. Sửa câu quy kết PII: S4 chưa kiểm riêng hiệu quả cổng PII. Giữ nguyên tiêu chí, snapshot, config và quyết định v2; còn cần kiểm atomicity/dữ liệu có ngày trong production. Codex hỗ trợ triển khai và kiểm tra.
+
 ### Exit ticket
 
 _Bản nháp có AI hỗ trợ, Hậu rà soát để phản ánh đúng điều bản thân rút ra._
