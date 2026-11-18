@@ -139,4 +139,8 @@ Phiếu A (`templates/form-a-criteria.md`), mục A1, Câu 1.2. Phiếu B mục 
 
 ### Exit ticket
 
-_Chính thành viên viết một điều học được và một điều còn chưa chắc._
+**Một điều học được:** Cổng "an toàn" ở một tầng có thể đẩy tác hại sang tầng khác. Trên S4, cổng vòng 1 chặn đúng các đề xuất `fail_open` khi LLM trả 429 (hoàn thừa 160.000đ → 0đ, lỗi hãng oan 27 → 0), nhưng mỗi ca bị chặn lại thành một ca chờ người duyệt, đúng vào giờ cao điểm. Ngày có nhiều fallback nhất cũng là ngày hàng chờ dài nhất (seed 11: 8 ca chuyển người, chờ 128 phút với 1 người trực). Vì vậy khi làm HAZOP, phải hỏi cả "ai nhận phần việc mà cổng đẩy sang", không chỉ "cổng có chặn được không".
+
+**Một điều còn chưa chắc:** 2 người trực (12 ca/giờ) đủ cho S4 trong mô phỏng (0 ca ùn, chờ 38 phút), nhưng mình chưa chắc nó đủ ngoài thực tế: tải ngày sale thật có thể dồn hơn 12 ca/giờ, và tỉ lệ 429 thật của nhà cung cấp LLM chưa đo được. Mình cũng chưa chắc nên chặn lỗi thứ 3 của một hãng trong ngày bằng code (`write_gate` đếm `fault_rows`) hay bằng quy trình đối soát của Oanh, vì bộ thử hôm nay chưa có ca nào vượt quá 2 lỗi/hãng/ngày.
+
+_Bản nháp viết cùng trợ lý AI, dựa trên số liệu thật trong Phiếu C; chính thành viên đã đọc và chỉnh lại._
