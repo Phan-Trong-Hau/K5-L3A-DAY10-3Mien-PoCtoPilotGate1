@@ -57,14 +57,21 @@ Ngưỡng chấp nhận, cấu hình ngân sách/nhân sự/pháp lý và quyế
 | Cấu hình nhóm duyệt | `R-base-after-20261118-151304-f76021` | 4456đ/ticket; ROI 1.24; escalation 22.73%; review_rate kể cả kiểm mẫu 27.27% |
 | Chốt kỹ thuật vòng 1 | `4f6f5b6`; `R-base-prepared-20261118-151443-f76021`; snapshot `1c93c400` | 110/110 đúng; CI95% [1.0;1.0]; queue_stuck=0; độ phủ 100% |
 | Quyết định chung v1 | `8a38bca`, Phiếu B/B8 | Nhóm xác nhận Cải tiến thêm; chưa cho pilot khách thật |
+| Kỹ thuật S4 | `0911736`; Phiếu C/C0–C2, C7–C8; `guards.py`, `monitors.py` | Cổng lấy trần ngày chặt hơn; monitor thời gian chờ và fail_open; không regression |
+| Kết quả cuối sau điều chỉnh vận hành của nhóm | `R-S4-grade-20261118-171005-7810a2`; báo cáo trong `submission/runs/` | PASS-VISIBLE; chờ tối đa38 phút, 0 ca ùn; chi phí7409đ/ticket, ROI0.35; 294000đ hoàn tự động≤300000đ |
 
 Các báo cáo tương ứng và `journal.jsonl` nằm trong `submission/runs/`. Kết quả là đo trên dữ liệu mock; không suy rộng thành bảo đảm an toàn production hoặc kết quả test ẩn.
 
-**Tiến độ vòng 2 — S4:** Đã nhập S4 từ repo `minhhai203/K5_L3_Day10_PoC-to-Pilot_Gate1_cards`, commit `997c81b`; đo trước sửa, trace S4-07, S4-08 (seed11/22), S4-02 và hàng chờ S4-33. Bổ sung guard đọc trần ngày từ ops_limits và hai monitor không dùng nhãn. Sau sửa S4 205/205 đúng, max hoàn tự động294000đ≤300000đ; bộ nền110/110, 13 tests OK. Grade `R-S4-grade-20261118-163826-906777`: integrity/criteria/regression/monitor đạt, visible chưa đạt vì vẫn10 ca ùn, chờ128 phút. Chi phí S4 6677đ/ticket, ROI0.50. Không đổi cấu hình nhân sự/phạm vi, không tự chốt v2; bàn giao nhóm xử lý vận hành. Chi tiết Phiếu C/C0–C2, C7–C8 và đầu vào kỹ thuật C6/C9. Có dùng Codex hỗ trợ triển khai, đo và soạn bằng chứng.
+**Kết quả vòng 2 — S4:** Đã nhận đúng thẻ, đo trước sửa và trace S4-07, S4-08 (seed11/22), S4-02, S4-33. Phần kỹ thuật của Hậu bổ sung cổng lấy min(trần Finance trong ngày, trần config), đăng ký `max_review_wait_minutes` và `policy_fail_open_rate`; cập nhật bằng chứng Phiếu C/C0–C2, C7–C8 và đầu vào C6/C9. Bản sau sửa kỹ thuật ban đầu vẫn còn 10 ca ùn, chờ128 phút; đã bàn giao đúng phần vận hành, không sửa số người hoặc tự quyết v2.
+
+Sau khi thành viên phụ trách điều chỉnh cấu hình lên 2 người duyệt, công suất12 ca/giờ và trần config300000đ/ngày, báo cáo cuối `R-S4-grade-20261118-171005-7810a2` đạt **PASS-VISIBLE**: S4 205/205 lần chạy đúng, bộ nền110/110; hoàn thừa/lỗi hãng oan/PII bằng0; hoàn tự động tối đa294000đ; chờ tối đa38 phút và0 ca ùn; chi phí7409đ/ticket, ROI0.35, độ phủ100%. Hậu đã pull bản mới và kiểm lại13 tests, hash tiêu chí/snapshot cùng lệnh kiểm bài nộp: **ĐỦ THÀNH PHẦN**. Nhóm giữ v2 **Cải tiến thêm**; không coi PASS-VISIBLE là kết quả test ẩn hoặc phê duyệt pilot thật. Có dùng Codex hỗ trợ triển khai, kiểm tra và viết báo cáo.
 
 ### Exit ticket
 
-_Chưa điền: Hậu tự xác nhận một điều học được và một điều còn chưa chắc sau khi đọc kết quả; không tự ghi trải nghiệm học tập thay thành viên._
+_Bản nháp có AI hỗ trợ, Hậu rà soát để phản ánh đúng điều bản thân rút ra._
+
+- **Một điều học được:** Cần kiểm dữ kiện và quyền ghi bằng code trước hành động, thay vì chỉ tin đề xuất của model. Trên S4, guard đã chặn sai tiền/lỗi hãng nhưng chuyển thêm việc sang người duyệt: bản sửa kỹ thuật vẫn chờ128 phút. Chỉ khi nhóm điều chỉnh công suất vận hành thì thời gian chờ mới còn38 phút và không còn ca ùn. Vì vậy phải đọc cả trace, chất lượng, hàng chờ và chi phí để đánh giá hệ thống.
+- **Một điều còn chưa chắc:** PASS-VISIBLE trên MockLLM và dữ liệu nhỏ chưa cho biết cổng chịu được tracking sai, nhiều worker ghi đồng thời hoặc tải đỉnh thật hay không. Tôi cần kiểm giao dịch kiểm-trần-và-ghi có tính nguyên tử, đo tải/429 thực tế và kiểm phê duyệt đầy đủ trước khi suy rộng kết quả sang pilot khách thật.
 
 ## BuiGiaHuy-2A202603525
 
