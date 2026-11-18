@@ -115,7 +115,7 @@ Vận hành và pháp lý. Phụ trách Câu 1.4 (Phiếu A, mục A2 - Telemetr
 
 ### Phần việc phụ trách
 
-Vận hành và pháp lý. Phụ trách Câu 1.2 (Phiếu A mục A1 - mục tiêu từ góc nhìn chị Oanh và chị Hạnh); Câu 2.4 (Phiếu B mục B4 HAZOP vòng 1, B5 checklist); Câu 2.10 phần 1 (`operations.pic`, `reviewers_on_shift`, `review_capacity_per_hour`, `max_queue_wait_minutes`); Câu 3.1/C4 (HAZOP của thẻ sự cố vòng 2).
+Vận hành và pháp lý. Phụ trách Câu 1.2 (Phiếu A mục A1 - mục tiêu từ góc nhìn chị Oanh và chị Hạnh); Câu 2.4 (Phiếu B mục B4 HAZOP vòng 1, B5 checklist); Câu 2.10 phần 1 (`operations.pic`, `reviewers_on_shift`, `review_capacity_per_hour`, `max_queue_wait_minutes`); Câu 3.1/C4 (HAZOP của thẻ sự cố vòng 2); Câu 3.3 (Phiếu C mục C5, giả định môi trường); rà soát cổng `legal` trên S4; C10 risk register; C11 checklist dòng 1 và 8.
 
 ### Đóng góp cụ thể
 
@@ -125,9 +125,17 @@ Câu 2.4: rà soát HAZOP vòng 1 trên `issue_refund` (5 dòng kỹ thuật, c�
 
 Câu 2.10 phần 1: đặt `operations.pic = NV-TUNG` (người giữ công tắc trong `staff`), `reviewers_on_shift = 1` (`ops_facts.default_reviewers_on_shift`), `review_capacity_per_hour = 6` (= 1 người × 6 ca/giờ, không vượt sức thật), `max_queue_wait_minutes = 60` (= `ops_limits.review_sla_minutes`). Có dùng trợ lý AI để đối chiếu số với `data/world.json`.
 
+Câu 3.1/C4 (thẻ S4): hoàn thiện HAZOP của thẻ (7 dòng sau khi gộp với dòng `llm.confirm → write_retry` của Huy) trên `issue_refund`, `file_carrier_fault`, LLM `policy_check` và người duyệt. Sửa các điểm sai so với dữ kiện: S4-07 không gặp lỗi LLM (chuyển người vì DAMAGED); VNX bị đình chỉ sau 10 lỗi/7 ngày, không phải 3; dòng đánh dấu "chưa thấy trên trace" thực ra đã thấy ở S4-08@11. Thêm hai dòng mới: (1) dây chuyền LLM 429 → cổng chuyển người → hàng chờ ùn (seed 11: 8 ca chuyển sau fallback, 10 ca ùn với 1 người, chờ 38 phút với 2 người; seed 22: 2 ca, 5 ca ùn với 1 người, chờ 18 phút với 2 người); (2) nhánh chưa thấy trên trace: cổng không đếm lỗi/hãng/ngày, MKD, DNB, LGX, GHSH chạm đúng trần 2/ngày, GHSH và DNB bị đình chỉ sau 3 lỗi/7 ngày. Có dùng trợ lý AI để chạy lại `evaluate("S4", "after")` trong Python (không ghi journal) và đối chiếu số.
+
+Câu 3.3 (C5): giả định ticket tới rải đều và các thành phần bên ngoài hỏng độc lập. Trên S4, 30/41 ticket dồn vào một giờ; LLM 429 trùng đúng giờ đó; Finance hạ trần ngày sale xuống 300.000đ. Thêm 2 người trực chỉ dời giả định thành "tải không vượt 12 ca/giờ".
+
+Rà soát `legal` trên S4: lỗi hãng oan base 27 → prepared 0 → after 0; `pii_leaks = 0` cả ba mốc; payload gửi hãng chỉ có `order_id`, `parcel_id`, `district`, `delay_days`. Ghi rõ S4 không thử PII (base cũng 0), nên chưa có bằng chứng cho cổng `pii_fields_blocked_to_third_party` trên thẻ này.
+
+C10: thêm 2 dòng risk register (dây chuyền LLM 429 → hàng chờ, PIC Phan Trọng Hậu; trần ngân sách đổi theo ngày, PIC Bùi Gia Huy), gộp với 2 dòng của Huy. C11: checklist dòng 1 (chất lượng) và dòng 8 (con người, pháp lý; còn Chưa vì thiếu cổng 2 lỗi/hãng/ngày), gộp với dòng 5, 6, 7, 9 của Huy/Thịnh. Có dùng trợ lý AI để đối chiếu số và gộp bản của nhóm.
+
 ### Bằng chứng
 
-Phiếu A (`templates/form-a-criteria.md`), mục A1, Câu 1.2. Phiếu B mục B4, B5 (PIC dòng 8). `config/operating_gates.json` mục `operations`, đã chốt trong snapshot vòng 1 `1c93c400`. Prepared `R-base-prepared-20261118-151443-f76021`: `ops.queue` 1 người, 6 ca/giờ, SLA 60, chờ tối đa 0 phút, `stuck = 0`, `ops.violations` rỗng; 13 tests OK.
+Phiếu A (`templates/form-a-criteria.md`), mục A1, Câu 1.2. Phiếu B mục B4, B5 (PIC dòng 8). Phiếu C mục C4, C5 (câu 3.3), C10, C11. Số khớp report `R-S4-prepared-20261118-171006-7810a2` (1 người: 10 ca ùn, chờ 128 phút) và `R-S4-after-20261118-171006-7810a2` (2 người: 0 ca ùn, chờ 38 phút, hoàn tự động tối đa 294.000đ/ngày, 0 lỗi hãng oan, 0 PII). `config/operating_gates.json` mục `operations`, đã chốt trong snapshot vòng 1 `1c93c400`. Prepared `R-base-prepared-20261118-151443-f76021`: `ops.queue` 1 người, 6 ca/giờ, SLA 60, chờ tối đa 0 phút, `stuck = 0`, `ops.violations` rỗng; 13 tests OK.
 
 ### Exit ticket
 
