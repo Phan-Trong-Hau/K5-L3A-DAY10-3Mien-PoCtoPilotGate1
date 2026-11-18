@@ -46,15 +46,17 @@ _Chính thành viên viết một điều học được và một điều còn 
 
 ### Phần việc phụ trách
 
-Sản phẩm và kinh doanh.
+Sản phẩm và kinh doanh. Phụ trách Khối 1 (mục tiêu hệ thống câu 1.1, đọc khoảng tin cậy câu 1.5, câu tiêu chí câu 1.6 và chốt ngưỡng `config/acceptance_criteria.json`), Khối 2A (bản đồ dữ liệu và phân tích drift câu 2.3), Khối 2B (cổng kinh doanh `business` câu 2.9 trong `config/operating_gates.json`), và cùng nhóm chốt quyết định Gate 1 v1/v2.
 
 ### Đóng góp cụ thể
 
-_Chính thành viên bổ sung sau khi thực hiện; ghi rõ phần việc có dùng AI._
+- Cùng nhóm thảo luận, rà soát dữ liệu `data/world.json` và chốt bộ ngưỡng chấp nhận ở Khối 1 (`pass_rate_min = 0.97`, `pass_k_min = 0.95`, các chỉ số an toàn `= 0`, `escalation_rate_max = 0.25`, `cost_per_ticket_vnd_max = 8000`, `roi_min = 0.25`, `queue_stuck_max = 0`) trước khi ký ở commit `38883f6`.
+- Soạn thảo và đối chiếu phương án cho Bản đồ dữ liệu + concept drift `REFUND-v3` → `REFUND-v4` ngày `2026-12-01` (Phiếu B mục B3) và 4 cổng kinh doanh (`daily_refund_cap_vnd = 2000000`, `cost_budget_per_ticket_vnd = 1500`, `pilot_scope` all 100%, `roi_min = 0.25` ở mục B7.4); đồng bộ theo bản chốt Vòng 1 của nhóm ở commit `8a38bca` (`snapshot 1c93c400`, quyết định `v1 = Cải tiến thêm`).
+- Có sử dụng trợ lý AI để đọc hiểu đề bài, rà soát `data/world.json`, kiểm tra công thức chi phí/ROI và soạn thảo nội dung rà soát cho Phiếu A/B.
 
 ### Bằng chứng
 
-_Chính thành viên bổ sung mã commit, mã lần chạy hoặc dòng trong phiếu._
+Commit ký tiêu chí `38883f6` (hash `5c491d8c`); Phiếu A (`templates/form-a-criteria.md`) mục A1/A3/A4; Phiếu B (`templates/form-b-evaluation-gates.md`) mục B3, B7.4 và B8 (chốt v1 **Cải tiến thêm** với `R-base-after-20261118-151304-f76021` và `R-base-prepared-20261118-151443-f76021`); khối `"business"` trong `config/operating_gates.json`.
 
 ### Exit ticket
 
