@@ -116,9 +116,12 @@ Vận hành và pháp lý. Phụ trách Câu 1.4 (Phiếu A, mục A2 - Telemetr
 - Commit `707c833` (`cau 1.4`), `6908bae` (merge Phiếu A), `13c2952` (`C4&C6`), `3c84494`.
 - Phiếu A (`templates/form-a-criteria.md`), mục A2, Câu 1.4 (cột Telemetry production).
 - Phiếu B (`templates/form-b-evaluation-gates.md`), mục B6 (Câu 2.5) và mục B7.5–B7.6 (Câu 2.10, gồm bổ sung sau S4); `config/operating_gates.round1.json` mục `legal` (bản chốt vòng 1 ở commit `4f6f5b6` / `8a38bca`).
-- Phiếu C (`templates/form-c-incident.md`), mục C4, C6, C9 và C11 (Runbook 4–5) gắn với mã lần chạy `R-S4-prepared-20261118-163800-f76021` và `R-S4-after-20261118-163825-906777`.
+- Phiếu C (`templates/form-c-incident.md`), mục C4, C6, C9 và C11 (Runbook 4–5) gắn với mã lần chạy `R-S4-prepared-20261118-171006-7810a2` và `R-S4-after-20261118-171006-7810a2` (`R-S4-grade-20261118-171005-7810a2`).
 
 ### Exit ticket
+
+- **Một điều học được:** Cách dùng HAZOP (đặc biệt guideword `INCAPABLE`) và Fault tree đa tầng để thấy rằng cổng code (`guards.py`) chỉ chặn ghi sai chứ không tự giải quyết nút thắt vận hành (`6 ca/giờ/người`) và trần ngân sách ngày sale (`300.000đ`); cần phối hợp đồng bộ cả con số (`reviewers_on_shift = 2`), runbook thu hẹp phạm vi và monitor (`policy_fail_open_rate`, `max_review_wait_minutes`).
+- **Một điều còn chưa chắc:** Với tải thực tế ngoài mock ở ngày sale lớn (nếu dồn hơn `12 ca/giờ` hoặc tỉ lệ 429 thật cao hơn `60%`), liệu việc thu hẹp `pilot_scope` theo kho trong vòng 15 phút có kịp ngăn `queue_stuck` trước khi vượt SLA 60 phút hay không, và độ trễ phản hồi khiếu nại thực tế từ hãng vận chuyển (`NV-OANH`) là bao lâu.
 
 ## DoDuyBo-2A202603591
 
