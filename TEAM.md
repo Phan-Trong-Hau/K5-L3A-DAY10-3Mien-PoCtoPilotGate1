@@ -32,11 +32,11 @@ Kỹ sư cổng; trưởng nhóm. Phụ trách cấu hình repo, test công khai
 
 ### Đóng góp cụ thể
 
-Đã dùng Codex hỗ trợ điền bảng thành viên và phân vai, gắn remote upstream, cấu hình danh tính Git theo MSSV, chạy 13 test công khai (OK), và soạn thước đo offline cho bước chọn chính sách ở Phiếu A/A2. Chưa chạy eval/grade, chưa ký tiêu chí hoặc chốt cổng vòng 1.
+Đã dùng Codex hỗ trợ điền bảng thành viên và phân vai, gắn remote upstream, cấu hình danh tính Git theo MSSV, chạy 13 test công khai (OK), và soạn thước đo offline cho bước chọn chính sách ở Phiếu A/A2. Sau khi cả nhóm xác nhận ngưỡng, đã ký tiêu chí ở commit 38883f6 và push trước baseline; chạy baseline, phân tích T-002@55, triển khai ba cổng ở guards.py, đo lại và chạy hai adhoc. Chưa chốt cổng vòng 1, chưa nhận thẻ hay chạy grade.
 
 ### Bằng chứng
 
-Commit `05587ec`: bảng thành viên và phân vai. Phiếu A/A2, câu 1.3: thước đo chọn phiên bản chính sách. Lệnh `python3 -m unittest discover -s tests`: 13 tests, OK. Chưa có mã lần chạy đánh giá.
+Commit `05587ec`: bảng thành viên và phân vai. Phiếu A/A2, câu 1.3: thước đo chọn phiên bản chính sách. Lệnh `python3 -m unittest discover -s tests`: 13 tests, OK. Baseline `R-base-before-20261118-150607-b45eeb`: hoàn thừa 20000đ, 1 lỗi hãng oan. Sau cổng `R-base-after-20261118-150649-f6305b`: 110/110 đúng, không hoàn thừa/lỗi oan/PII; 13 tests OK. Chi tiết Phiếu B/B0–B2, B6, B7.1–B7.3.
 
 ### Exit ticket
 
