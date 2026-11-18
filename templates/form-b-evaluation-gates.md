@@ -297,7 +297,7 @@ Mỗi con số kèm một câu lý do, lấy từ `data/world.json` → `ops_lim
 
 ### B7.5 · Câu 2.10 · Cổng con người, vận hành, pháp lý và Runbook 1–3
 
-Cấu hình do nhóm duyệt, Codex hỗ trợ soạn; Thịnh/Bộ phụ trách rà soát. Kênh trực ca dưới đây là quy trình mô phỏng của lab, chưa tạo kênh liên lạc thật.
+Cấu hình do nhóm duyệt, Codex hỗ trợ soạn; Bộ phụ trách rà soát. Kênh trực ca dưới đây là quy trình mô phỏng của lab, chưa tạo kênh liên lạc thật.
 
 #### Runbook 1 · Trách nhiệm
 
@@ -341,6 +341,8 @@ Các ngưỡng vàng là đề xuất điều phối trong runbook; không thay 
 | Gọi hỗ trợ | Từ 3 ca chờ chưa bắt đầu hoặc chờ lâu nhất ≥30 phút, Hạnh gọi Tùng xin người hỗ trợ đủ quyền; chưa có người được xác nhận thì thu hẹp tiếp nhận thay vì giả định tăng công suất. |
 | Thu hẹp/tắt | Chờ >60 phút hoặc ca ùn >0: Tùng thu hẹp phạm vi sau đo, nếu chưa kiểm được thì tạm tắt hoàn tự động và chuyển người; không tuyên bố đã vượt qua test tải. |
 | Chi phí thêm người | Mỗi người trực thêm tốn 30000đ/ca theo ops_facts, cộng chi phí review thực tế; nếu giữ 22 ticket thì riêng standby tăng khoảng 1364đ/ticket. Đây là ước tính, phải chạy lại report trước quyết định đổi nhân sự. |
+
+*(Bổ sung sau sự cố S4):* Thực tế đêm 11.11 (`S4-01`..`S4-41`, 41 ticket dồn sau 20h) cho thấy 1 người trực (`NV-HANH`, 6 ca/giờ) bị ngập hàng chờ: mốc `prepared` có **10 ca bị ùn**, chờ lâu nhất **128 phút** (> SLA 60 phút), `escalation_rate` lên **51,22%–53,17%**. Cần tăng `reviewers_on_shift` ở ca sale (hoặc thu hẹp `pilot_scope`) và đo lại chi phí/ROI thực tế trước khi mở rộng.
 
 ---
 
