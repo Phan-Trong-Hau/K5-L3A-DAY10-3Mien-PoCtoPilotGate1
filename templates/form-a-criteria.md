@@ -1,6 +1,6 @@
 # Phiếu A · Tiêu chí và cách đo · Khối 1 (phút 15–65)
 
-**Bàn:** ______ · **Người cầm bút chính:** vai Sản phẩm và kinh doanh (câu 1.3: Kỹ sư cổng; câu 1.2, 1.4: Vận hành và pháp lý)
+**Bàn:** 3Mien · **Người cầm bút chính:** vai Sản phẩm và kinh doanh (câu 1.3: Kỹ sư cổng; câu 1.2, 1.4: Vận hành và pháp lý)
 
 Điền phiếu này **trước khi chạy trợ lý lần nào**. Viết xong thì chép ngưỡng sang `config/acceptance_criteria.json`, ký ở phút 60–65,
 rồi mới chạy đánh giá. Khối 1 không sửa code.
@@ -17,6 +17,12 @@ rồi mới chạy đánh giá. Khối 1 không sửa code.
 <a id="a1"></a>
 
 ## A1 · Mục tiêu (phút 15–20)
+
+**Tài liệu Lab 9 nối tiếp:** PRD v1.1 và eval card của Phan Trọng Hậu (2A202603547), ngày 17/11/2026, trong repo `K5-L3A-DAY09-2A202603547-PhanTrongHau-EvaluationandFailureAnalysis`, lần lượt ở `docs/PRD_v1.1.md` và `docs/eval_card.md` (được dẫn từ `src/lab9/README.md`).
+
+**Điểm kế thừa:** kiểm chính sách hiệu lực, quyền/phê duyệt, tính đúng số tiền và đối chiếu reply với ledger; phân biệt pass_rate với pass^5; không dùng LLM judge để xác nhận tiền. Lab 9 dùng dữ liệu mock, chưa phê duyệt vận hành tiền thật. Lab 10 phải bổ sung cổng kinh doanh, công suất người duyệt và trách nhiệm vận hành.
+
+**Giới hạn chuyển tiếp:** Lab 9 v2 có 28 item × 5 seed, còn Lab 10 có bộ nền 22 ticket × 5 seed. Không so trực tiếp kết quả hai bộ hay coi ngưỡng Lab 9 là tiêu chí đã được nhóm ký cho Lab 10. Ngưỡng Lab 10 còn chờ nhóm thống nhất trước lần đánh giá đầu tiên.
 
 ### Câu 1.1 · Một mục tiêu cấp hệ thống (khác "model trả lời đúng")
 
@@ -48,12 +54,12 @@ trợ lý có đang gây thiệt hại cho bên ngoài LogiX không; không có 
 
 | | Offline, cho MỘT bước (câu 1.3) | Telemetry production (câu 1.4) |
 |---|---|---|
-| **Bước / hành vi được đo** | | |
-| **Thước đo** (một câu, có đơn vị) | | |
-| **Dữ liệu** (lấy ở đâu, bao nhiêu, ai gán nhãn) | | |
-| **Cách tính** (công thức, mẫu số, cách xử lý ca thiếu dữ liệu) | | |
+| **Bước / hành vi được đo** | Chọn phiên bản chính sách hoàn tiền có hiệu lực tại ngày xử lý. | |
+| **Thước đo** (một câu, có đơn vị) | Tỉ lệ lần chọn sai phiên bản chính sách, đơn vị %. | |
+| **Dữ liệu** (lấy ở đâu, bao nhiêu, ai gán nhãn) | Sau khi ký tiêu chí: sự kiện `policy.policy_id` trong trace của 22 ticket × 5 seed; đối chiếu `data/world.json` (`policies`, `as_of`). Hậu đối chiếu bằng `H.effective_policy`, Huy kiểm tra lại quy tắc ngày hiệu lực. Đây là kế hoạch đo, chưa có kết quả. | |
+| **Cách tính** (công thức, mẫu số, cách xử lý ca thiếu dữ liệu) | 100 × số lần `policy_id` khác chính sách hiệu lực / số lần có sự kiện `policy` và xác định được đúng một chính sách hiệu lực. Lần không tới bước chọn chính sách đếm riêng; ngày không có hoặc có nhiều chính sách hiệu lực ghi là lỗi dữ liệu và loại khỏi mẫu số. Nếu mẫu số bằng 0, báo không đủ dữ liệu. | |
 | **Khung thời gian / ngưỡng báo động** | (không áp dụng) | |
-| **Điểm mù** (thước đo này KHÔNG thấy gì) | | |
+| **Điểm mù** (thước đo này KHÔNG thấy gì) | Không phát hiện nội dung chính sách trong DB sai, chọn sai kiện hàng, tính sai số tiền dù chọn đúng phiên bản, hoặc lỗi ở lệnh ghi sau đó. | |
 
 **Ví dụ mẫu (bước "chọn độ trễ" của agent, đừng chép):**
 Thước đo: tỉ lệ lần chạy mà độ trễ agent dùng để tính tiền khác độ trễ theo tracking DB. Dữ liệu: sự kiện `proposal.delay_days_used`
