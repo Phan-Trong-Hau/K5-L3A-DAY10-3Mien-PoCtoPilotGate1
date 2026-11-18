@@ -48,12 +48,12 @@ trợ lý có đang gây thiệt hại cho bên ngoài LogiX không; không có 
 
 | | Offline, cho MỘT bước (câu 1.3) | Telemetry production (câu 1.4) |
 |---|---|---|
-| **Bước / hành vi được đo** | | |
-| **Thước đo** (một câu, có đơn vị) | | |
-| **Dữ liệu** (lấy ở đâu, bao nhiêu, ai gán nhãn) | | |
-| **Cách tính** (công thức, mẫu số, cách xử lý ca thiếu dữ liệu) | | |
-| **Khung thời gian / ngưỡng báo động** | (không áp dụng) | |
-| **Điểm mù** (thước đo này KHÔNG thấy gì) | | |
+| **Bước / hành vi được đo** | | Ghi lỗi và thông báo cho hãng vận chuyển (`file_carrier_fault` + `notify_carrier`) |
+| **Thước đo** (một câu, có đơn vị) | | Tỉ lệ (%) biên bản ghi lỗi hãng do trợ lý tự động tạo bị hãng vận chuyển phản đối / yêu cầu đối soát lại |
+| **Dữ liệu** (lấy ở đâu, bao nhiêu, ai gán nhãn) | | Log production của `file_carrier_fault` và `notify_carrier` (`ticket_id`, `carrier_id`, `fault_id`) ghép với ticket/email khiếu nại từ hãng gửi về kế toán đối soát (`NV-OANH`); không có nhãn đúng/sai sẵn |
+| **Cách tính** (công thức, mẫu số, cách xử lý ca thiếu dữ liệu) | | `(Số fault_id do trợ lý tự tạo bị hãng khiếu nại trong kỳ) / (Tổng số fault_id trợ lý đã ghi và gửi notify_carrier trong kỳ) × 100%`. Ca đã chuyển người duyệt hoặc thiếu `fault_id` loại khỏi mẫu số và đếm riêng |
+| **Khung thời gian / ngưỡng báo động** | (không áp dụng) | Cửa sổ trượt 24 giờ (theo dõi thêm 7 ngày do luật `suspend_after_strikes_7d = 3`); báo động đỏ và tạm khóa tự động `file_carrier_fault` nếu tỉ lệ khiếu nại > 5% trong 24h hoặc có ≥ 2 khiếu nại cho cùng 1 hãng trong ngày |
+| **Điểm mù** (thước đo này KHÔNG thấy gì) | | Không thấy ca hãng bị ghi lỗi oan nhưng chưa kịp/không gửi phản đối (độ trễ tín hiệu), và không phát hiện được ca lộ PII hay hoàn tiền sai cho khách hàng/shop |
 
 **Ví dụ mẫu (bước "chọn độ trễ" của agent, đừng chép):**
 Thước đo: tỉ lệ lần chạy mà độ trễ agent dùng để tính tiền khác độ trễ theo tracking DB. Dữ liệu: sự kiện `proposal.delay_days_used`
